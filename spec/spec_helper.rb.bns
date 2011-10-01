@@ -1,15 +1,23 @@
-
-require File.expand_path(
-    File.join(File.dirname(__FILE__), %w[.. lib <%= name %>]))
-
-Spec::Runner.configure do |config|
-  # == Mock Framework
-  #
-  # RSpec uses it's own mocking framework by default. If you prefer to
-  # use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
+require 'simplecov'
+require 'simplecov-rcov'
+class SimpleCov::Formatter::MergedFormatter
+  def format(result)
+     SimpleCov::Formatter::HTMLFormatter.new.format(result)
+     SimpleCov::Formatter::RcovFormatter.new.format(result)
+  end
+end
+SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
+SimpleCov.start do
+  add_filter "/vendor/"
 end
 
+require '<%= name %>'
+require 'mocha'
+
+Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
+
+RSpec.configure do |config|
+  config.mock_with :mocha
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
+end
