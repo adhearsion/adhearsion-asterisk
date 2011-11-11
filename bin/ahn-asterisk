@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'ahn-asterisk'
-
-# Put your code here
