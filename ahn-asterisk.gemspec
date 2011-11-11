@@ -5,11 +5,11 @@ require "ahn-asterisk/version"
 Gem::Specification.new do |s|
   s.name        = "ahn-asterisk"
   s.version     = AhnAsterisk::VERSION
-  s.authors     = ["FIXME (author's name)"]
-  s.email       = ["FIXME (author's email)"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["Ben Langfeld"]
+  s.email       = ["blangfeld@adhearsion.com"]
+  s.homepage    = "http://adhearsion.com"
+  s.summary     = %q{Asterisk specific features for Adhearsion}
+  s.description = %q{An Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration}
 
   s.rubyforge_project = "ahn-asterisk"
 

@@ -1,7 +1,7 @@
 ahn-asterisk
 ===========
 
-FIXME (describe your package)
+ahn-asterisk is an Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration.
 
 Features
 --------
@@ -11,36 +11,28 @@ Features
 Requirements
 ------------
 
-* FIXME (list of requirements)
+* Adhearsion 2.0+
+* Asterisk 1.8+
 
 Install
 -------
 
-    gem install ahn-asterisk FIXME (gem install, anything else)
+Add `ahn-asterisk` to your Adhearsion app's Gemfile.
 
 Examples
 --------
 
-```ruby
-  require 'ahn-asterisk'
-  FIXME (code sample of usage)
-```
 
 Author
 ------
 
-Original author: FIXME (author's name)
-
-Contributors:
-
-* FIXME (contributor 1?)
-* FIXME (contributor 2?)
+Original author: Ben Langfeld
 
 Links
 -----
-* [Source](https://github.com/ahn-asterisk/ahn-asterisk)
-* [Documentation](http://rdoc.info/github/ahn-asterisk/ahn-asterisk/master/frames)
-* [Bug Tracker](https://github.com/ahn-asterisk/ahn-asterisk/issues)
+* [Source](https://github.com/adhearsion/ahn-asterisk)
+* [Documentation](http://rdoc.info/github/adhearsion/ahn-asterisk/master/frames)
+* [Bug Tracker](https://github.com/adhearsion/ahn-asterisk/issues)
 
 Note on Patches/Pull Requests
 -----------------------------
@@ -55,4 +47,4 @@ Note on Patches/Pull Requests
 Copyright
 ---------
 
-Copyright (c) 2011 FIXME (author's name). MIT licence (see LICENSE for details). FIXME (different license?)
+Copyright (c) 2011 Ben Langfeld. MIT licence (see LICENSE for details).
