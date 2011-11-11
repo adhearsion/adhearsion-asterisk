@@ -1,4 +1,4 @@
-<%= name %>
+ahn-asterisk
 ===========
 
 FIXME (describe your package)
@@ -16,13 +16,13 @@ Requirements
 Install
 -------
 
-    gem install <%= name %> FIXME (gem install, anything else)
+    gem install ahn-asterisk FIXME (gem install, anything else)
 
 Examples
 --------
 
 ```ruby
-  require '<%= name %>'
+  require 'ahn-asterisk'
   FIXME (code sample of usage)
 ```
 
@@ -38,9 +38,9 @@ Contributors:
 
 Links
 -----
-* [Source](https://github.com/<%= name %>/<%= name %>)
-* [Documentation](http://rdoc.info/github/<%= name %>/<%= name %>/master/frames)
-* [Bug Tracker](https://github.com/<%= name %>/<%= name %>/issues)
+* [Source](https://github.com/ahn-asterisk/ahn-asterisk)
+* [Documentation](http://rdoc.info/github/ahn-asterisk/ahn-asterisk/master/frames)
+* [Bug Tracker](https://github.com/ahn-asterisk/ahn-asterisk/issues)
 
 Note on Patches/Pull Requests
 -----------------------------
@@ -55,4 +55,4 @@ Note on Patches/Pull Requests
 Copyright
 ---------
 
-Copyright (c) <%= Time.now.strftime('%Y') %> FIXME (author's name). MIT licence (see LICENSE for details). FIXME (different license?)
+Copyright (c) 2011 FIXME (author's name). MIT licence (see LICENSE for details). FIXME (different license?)
