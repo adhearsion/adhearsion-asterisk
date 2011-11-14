@@ -303,5 +303,24 @@ module AhnAsterisk
         end
       end
     end
+
+    describe "#queue" do
+      it 'should not create separate objects for queues with basically the same name' do
+        subject.queue('foo').should be subject.queue('foo')
+        subject.queue('bar').should be subject.queue(:bar)
+      end
+
+      it "should return an instance of QueueProxy" do
+        subject.queue("foobar").should be_a_kind_of AhnAsterisk::QueueProxy
+      end
+
+      it "should set the QueueProxy's name" do
+        subject.queue("foobar").name.should == 'foobar'
+      end
+
+      it "should set the QueueProxy's environment" do
+        subject.queue("foobar").environment.should == subject
+      end
+    end
   end
 end

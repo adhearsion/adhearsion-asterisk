@@ -227,5 +227,29 @@ module AhnAsterisk
 
       execute 'VoiceMailMain', *command_args
     end
+
+    #
+    # Place a call in a queue to be answered by a registered agent. You must then call #join!
+    #
+    # @param [String] queue_name the queue name to place the caller in
+    # @return [AhnAsterisk::QueueProxy] a queue proxy object
+    #
+    # @see http://www.voip-info.org/wiki-Asterisk+cmd+Queue Full information on the Asterisk Queue
+    # @see AhnAsterisk":QueueProxy#join! for further details
+    #
+    dialplan :queue do |queue_name|
+      queue_name = queue_name.to_s
+
+      @queue_proxy_hash_lock ||= Mutex.new
+      @queue_proxy_hash_lock.synchronize do
+        @queue_proxy_hash ||= {}
+        if @queue_proxy_hash.has_key? queue_name
+          return @queue_proxy_hash[queue_name]
+        else
+          proxy = @queue_proxy_hash[queue_name] = QueueProxy.new(queue_name, self)
+          return proxy
+        end
+      end
+    end
   end
 end
