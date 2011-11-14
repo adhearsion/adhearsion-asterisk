@@ -14,10 +14,6 @@ module AhnAsterisk
       Adhearsion::DialPlan::ExecutionEnvironment.create mock_call, :adhearsion
     end
 
-    it { should respond_to :agi }
-
-    its(:agi) { should == :foo }
-
     describe '#agi' do
       let :expected_agi_command do
         Punchblock::Component::Asterisk::AGI::Command.new :name => 'Dial', :params => ['4044754842', 15]
