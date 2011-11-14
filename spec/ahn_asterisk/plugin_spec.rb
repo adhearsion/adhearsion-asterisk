@@ -33,5 +33,19 @@ module AhnAsterisk
         values.should == [200, 1, 'foobar']
       end
     end
+
+    describe '#execute' do
+      it 'calls #agi and prefixes the command with EXEC' do
+        subject.expects(:agi).once.with 'EXEC Dial', '4044754842', 15
+        subject.execute 'Dial', '4044754842', 15
+      end
+    end
+
+    describe '#verbose' do
+      it 'executes the VERBOSE AGI command' do
+        subject.expects(:agi).once.with 'VERBOSE', 'Foo Bar!', 15
+        subject.verbose 'Foo Bar!', 15
+      end
+    end
   end
 end
