@@ -147,5 +147,161 @@ module AhnAsterisk
         }.should_not raise_error
       end
     end
+
+    describe '#voicemail' do
+      it 'should not send the context name when none is given' do
+        subject.expects(:execute).once.with('voicemail', 123, '').throws :sent_voicemail!
+        lambda { subject.voicemail 123 }.should throw_symbol(:sent_voicemail!)
+      end
+
+      it 'should send the context name when one is given' do
+        mailbox_number, context_name = 333, 'doesntmatter'
+        subject.expects(:execute).once.with('voicemail', "#{mailbox_number}@#{context_name}", '').throws :sent_voicemail!
+        lambda { subject.voicemail(context_name => mailbox_number) }.should throw_symbol(:sent_voicemail!)
+      end
+
+      it 'should pass in the s option if :skip => true' do
+        mailbox_number = '012'
+        subject.expects(:execute).once.with('voicemail', mailbox_number, 's').throws :sent_voicemail!
+        lambda { subject.voicemail(mailbox_number, :skip => true) }.should throw_symbol(:sent_voicemail!)
+      end
+
+      it 'should combine mailbox numbers with the context name given when both are given' do
+        subject.expects(:variable).with("VMSTATUS").returns 'SUCCESS'
+        context   = "lolcats"
+        mailboxes = [1,2,3,4,5]
+        mailboxes_with_context = mailboxes.map { |mailbox| [mailbox, context].join '@' }
+        subject.expects(:execute).once.with('voicemail', mailboxes_with_context.join('&'), '')
+        subject.voicemail context => mailboxes
+      end
+
+      it 'should raise an argument error if the mailbox number is not numerical' do
+        lambda {
+          subject.voicemail :foo => "bar"
+        }.should raise_error ArgumentError
+      end
+
+      it 'should raise an argument error if too many arguments are supplied' do
+        lambda {
+          subject.voicemail "wtfisthisargument", :context_name => 123, :greeting => :busy
+        }.should raise_error ArgumentError
+      end
+
+      it 'should raise an ArgumentError if multiple context names are given' do
+        lambda {
+          subject.voicemail :one => [1,2,3], :two => [11,22,33]
+        }.should raise_error ArgumentError
+      end
+
+      it "should raise an ArgumentError when the :greeting value isn't recognized" do
+        lambda {
+          subject.voicemail :context_name => 123, :greeting => :zomgz
+        }.should raise_error ArgumentError
+      end
+
+      it 'should pass in the u option if :greeting => :unavailable' do
+        mailbox_number = '776'
+        subject.expects(:execute).once.with('voicemail', mailbox_number, 'u').throws :sent_voicemail!
+        lambda { subject.voicemail(mailbox_number, :greeting => :unavailable) }.should throw_symbol(:sent_voicemail!)
+      end
+
+      it 'should pass in both the skip and greeting options if both are supplied' do
+        mailbox_number = '4'
+        subject.expects(:execute).once.with('voicemail', mailbox_number, 'u').throws :sent_voicemail!
+        lambda { subject.voicemail(mailbox_number, :greeting => :unavailable) }.should throw_symbol(:sent_voicemail!)
+      end
+
+      it 'should raise an ArgumentError if mailbox_number is blank?()' do
+        lambda {
+          subject.voicemail ''
+        }.should raise_error ArgumentError
+
+        lambda {
+          subject.voicemail nil
+        }.should raise_error ArgumentError
+      end
+
+      it 'should pass in the b option if :gretting => :busy' do
+        mailbox_number = '1'
+        subject.expects(:execute).once.with('voicemail', mailbox_number, 'b').throws :sent_voicemail!
+        lambda { subject.voicemail(mailbox_number, :greeting => :busy) }.should throw_symbol(:sent_voicemail!)
+      end
+
+      it 'should return true if VMSTATUS == "SUCCESS"' do
+        subject.expects(:execute).once
+        subject.expects(:variable).once.with('VMSTATUS').returns "SUCCESS"
+        subject.voicemail(3).should be true
+      end
+
+      it 'should return false if VMSTATUS == "USEREXIT"' do
+        subject.expects(:execute).once
+        subject.expects(:variable).once.with('VMSTATUS').returns "USEREXIT"
+        subject.voicemail(2).should be false
+      end
+
+      it 'should return nil if VMSTATUS == "FAILED"' do
+        subject.expects(:execute).once
+        subject.expects(:variable).once.with('VMSTATUS').returns "FAILED"
+        subject.voicemail(2).should be nil
+      end
+    end
+
+    describe '#voicemail_main' do
+      it "the :folder Hash key argument should wrap the value in a()" do
+        folder = "foobar"
+        mailbox = 81
+        subject.expects(:execute).once.with("VoiceMailMain", "#{mailbox}","a(#{folder})")
+        subject.voicemail_main :mailbox => mailbox, :folder => folder
+      end
+
+      it ':authenticate should pass in the "s" option if given false' do
+        mailbox = 333
+        subject.expects(:execute).once.with("VoiceMailMain", "#{mailbox}","s")
+        subject.voicemail_main :mailbox => mailbox, :authenticate => false
+      end
+
+      it ':authenticate should pass in the s option if given false' do
+        mailbox = 55
+        subject.expects(:execute).once.with("VoiceMailMain", "#{mailbox}")
+        subject.voicemail_main :mailbox => mailbox, :authenticate => true
+      end
+
+      it 'should not pass any flags only a mailbox is given' do
+        mailbox = "1"
+        subject.expects(:execute).once.with("VoiceMailMain", "#{mailbox}")
+        subject.voicemail_main :mailbox => mailbox
+      end
+
+      it 'when given no mailbox or context an empty string should be passed to execute as the first argument' do
+        subject.expects(:execute).once.with("VoiceMailMain", "", "s")
+        subject.voicemail_main :authenticate => false
+      end
+
+      it 'should properly concatenate the options when given multiple ones' do
+        folder = "ohai"
+        mailbox = 9999
+        subject.expects(:execute).once.with("VoiceMailMain", "#{mailbox}", "sa(#{folder})")
+        subject.voicemail_main :mailbox => mailbox, :authenticate => false, :folder => folder
+      end
+
+      it 'should not require any arguments' do
+        subject.expects(:execute).once.with("VoiceMailMain")
+        subject.voicemail_main
+      end
+
+      it 'should pass in the "@context_name" part in if a :context is given and no mailbox is given' do
+        context_name = "icanhascheezburger"
+        subject.expects(:execute).once.with("VoiceMailMain", "@#{context_name}")
+        subject.voicemail_main :context => context_name
+      end
+
+      it "should raise an exception if the folder has a space or malformed characters in it" do
+        ["i has a space", "exclaim!", ",", ""].each do |bad_folder_name|
+          lambda {
+            subject.voicemail_main :mailbox => 123, :folder => bad_folder_name
+          }.should raise_error ArgumentError
+        end
+      end
+    end
   end
 end
