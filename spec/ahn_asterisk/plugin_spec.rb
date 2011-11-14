@@ -47,5 +47,66 @@ module AhnAsterisk
         subject.verbose 'Foo Bar!', 15
       end
     end
+
+    describe "#variable" do
+      it "should call set_variable when Hash argument given" do
+        subject.expects(:set_variable).once.with :ohai, "ur_home_erly"
+        subject.variable :ohai => 'ur_home_erly'
+      end
+
+      it "should call set_variable for every Hash-key given" do
+        many_args = { :a => :b, :c => :d, :e => :f, :g => :h}
+        subject.expects(:set_variable).times(many_args.size)
+        subject.variable many_args
+      end
+
+      it "should call get_variable for every String given" do
+        variables = ["foo", "bar", :qaz, :qwerty, :baz]
+        variables.each do |var|
+          subject.expects(:get_variable).once.with(var).returns("X")
+        end
+        subject.variable(*variables).should == ["X"] * variables.size
+      end
+
+      it "should NOT return an Array when just one arg is given" do
+        subject.expects(:get_variable).once.returns "lol"
+        subject.variable(:foo).should_not be_a Array
+      end
+
+      it "should raise an ArgumentError when a Hash and normal args are given" do
+        lambda {
+          subject.variable 5, 4, 3, 2, 1, :foo => :bar
+        }.should raise_error ArgumentError
+      end
+    end
+
+    describe "#set_variable" do
+      it "uses SET VARIABLE" do
+        subject.expects(:agi).once.with 'SET VARIABLE', 'foo', 'i can " has ruby?'
+        subject.set_variable 'foo', 'i can " has ruby?'
+      end
+    end
+
+    describe '#get_variable' do
+      it 'uses GET VARIABLE and extracts the value from the data' do
+        subject.expects(:agi).once.with('GET VARIABLE', 'foo').returns [200, 1, 'bar']
+        subject.get_variable('foo').should == 'bar'
+      end
+    end
+
+    describe "#sip_add_header" do
+      it "executes SIPAddHeader" do
+        subject.expects(:execute).once.with 'SIPAddHeader', 'x-ahn-header: rubyrox'
+        subject.sip_add_header "x-ahn-header", "rubyrox"
+      end
+    end
+
+    describe "#sip_get_header" do
+      it "uses #get_variable to get the header value" do
+        value = 'jason-was-here'
+        subject.expects(:get_variable).once.with('SIP_HEADER(x-ahn-header)').returns value
+        subject.sip_get_header("x-ahn-header").should == value
+      end
+    end
   end
 end
