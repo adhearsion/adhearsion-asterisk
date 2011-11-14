@@ -19,9 +19,18 @@ module AhnAsterisk
         Punchblock::Component::Asterisk::AGI::Command.new :name => 'Dial', :params => ['4044754842', 15]
       end
 
-      it 'should execute an AGI command with the specified name and parameters' do
+      let :complete_event do
+        Punchblock::Event::Complete.new.tap do |c|
+          c.reason = Punchblock::Component::Asterisk::AGI::Command::Complete::Success.new :code => 200, :result => 1, :data => 'foobar'
+        end
+      end
+
+      it 'should execute an AGI command with the specified name and parameters and return the response code, response and data' do
+        Punchblock::Component::Asterisk::AGI::Command.any_instance.stubs :complete_event => mock('Complete', :resource => complete_event)
+
         subject.expects(:execute_component_and_await_completion).once.with expected_agi_command
-        subject.agi 'Dial', '4044754842', 15
+        values = subject.agi 'Dial', '4044754842', 15
+        values.should == [200, 1, 'foobar']
       end
     end
   end
