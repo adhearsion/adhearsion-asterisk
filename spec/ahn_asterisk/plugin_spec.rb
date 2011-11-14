@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 module AhnAsterisk
-  describe Plugin do
-    it { should be_a Adhearsion::Plugin }
-  end
-
   describe 'A DialPlan::ExecutionEnvironment with the plugin loaded' do
     before(:all) { Adhearsion::Plugin.load }
 
