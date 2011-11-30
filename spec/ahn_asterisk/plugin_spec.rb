@@ -321,6 +321,140 @@ module AhnAsterisk
       it "should set the QueueProxy's environment" do
         subject.queue("foobar").environment.should == subject
       end
+    end#describe #queue
+
+    describe "#play" do
+      let(:audiofile) { "tt-monkeys" }
+      let(:audiofile2) { "tt-weasels" }
+
+      it 'should return true if play proceeds correctly' do
+        subject.expects(:play!).with([audiofile])
+        subject.play(audiofile).should be true
+      end
+
+      it 'should return false if an audio file cannot be found' do
+        subject.expects(:play!).with([audiofile]).raises(Adhearsion::PlaybackError)
+        subject.play(audiofile).should be false
+
+      end
+
+      it 'should return false when audio files cannot be found' do
+        subject.expects(:play!).with([audiofile, audiofile2]).raises(Adhearsion::PlaybackError)
+        subject.play(audiofile, audiofile2).should be false
+      end
     end
-  end
+
+    describe "#play!" do
+      let(:audiofile) { "tt-monkeys" }
+      let(:audiofile2) { "tt-weasels" }
+      let(:numeric) { 20 }
+      let(:numeric_string) { "42" }
+      let(:date) { Date.parse('2011-10-24') }
+      let(:time) { Time.at(875121313) }
+
+      describe "with a single argument" do
+        it 'passing a single string to play() results in play_soundfile being called with that file name' do
+          subject.expects(:play_time).with([audiofile]).returns(false)
+          subject.expects(:play_numeric).with(audiofile).returns(false)
+          subject.expects(:play_soundfile).with(audiofile).returns(true)
+          subject.play!(audiofile)
+        end
+
+        it 'If a number is passed to play(), the play_numeric method is called with that argument'  do
+          subject.expects(:play_time).with([numeric]).returns(false)
+          subject.expects(:play_numeric).with(numeric).returns(true)
+          subject.play!(numeric)
+        end
+
+        it 'if a string representation of a number is passed to play(), the play_numeric method is called with that argument' do
+          subject.expects(:play_time).with([numeric_string]).returns(false)
+          subject.expects(:play_numeric).with(numeric_string).returns(true)
+          subject.play!(numeric_string)
+        end
+
+        it 'If a Time is passed to play(), the play_time method is called with that argument' do
+          subject.expects(:play_time).with([time]).returns(true)
+          subject.play!(time)
+        end
+
+        it 'If a Date is passed to play(), the play_time method is called with that argument' do
+          subject.expects(:play_time).with([date]).returns(true)
+          subject.play!(date)
+        end
+
+        it 'raises an exception if play fails' do
+          subject.expects(:play_time).with([audiofile]).returns(false)
+          subject.expects(:play_numeric).with(audiofile).returns(false)
+          subject.expects(:play_soundfile).with(audiofile).returns(false)
+          lambda { subject.play!(audiofile) }.should raise_error(Adhearsion::PlaybackError)
+        end
+      end
+
+      describe "with multiple arguments" do
+        it 'loops over the arguments, issuing separate play commands' do
+          subject.expects(:play_time).with([audiofile, audiofile2]).returns(false)
+          subject.expects(:play_numeric).with(audiofile).returns(false)
+          subject.expects(:play_soundfile).with(audiofile).returns(true)
+          subject.expects(:play_numeric).with(audiofile2).returns(false)
+          subject.expects(:play_soundfile).with(audiofile2).returns(true)
+          subject.play!(audiofile, audiofile2)
+        end
+
+        it 'raises an exception if play fails with multiple argument' do
+          subject.expects(:play_time).with([audiofile, audiofile2]).returns(false)
+          subject.expects(:play_numeric).with(audiofile).returns(false)
+          subject.expects(:play_soundfile).with(audiofile).returns(false)
+          subject.expects(:play_numeric).with(audiofile2).returns(false)
+          subject.expects(:play_soundfile).with(audiofile2).returns(false)
+          lambda { subject.play!(audiofile, audiofile2) }.should raise_error(Adhearsion::PlaybackError)
+        end
+      end
+
+    end 
+    describe "#play_time" do
+      let(:date) { Date.parse('2011-10-24') }
+      let(:date_format) { 'ABdY' }
+      let(:time) { Time.at(875121313) }
+      let(:time_format) { 'IMp' }
+
+      it "if a Date object is passed in, SayUnixTime is sent with the argument and format" do
+        subject.expects(:execute).once.with("SayUnixTime", date.to_time.to_i, "", date_format)
+        subject.play_time(date, :format => date_format)
+      end
+
+      it "if a Time object is passed in, SayUnixTime is sent with the argument and format" do
+        subject.expects(:execute).once.with("SayUnixTime", time.to_i, "", time_format)
+        subject.play_time(time, :format => time_format)
+      end
+
+      it "if a Time object is passed in alone, SayUnixTime is sent with the argument and the default format" do
+        subject.expects(:execute).once.with("SayUnixTime", time.to_i, "", "")
+        subject.play_time(time)
+      end
+
+    end 
+    describe "#play_numeric" do
+      let(:numeric) { 20 }
+      it "should send the correct command SayNumber playing a numeric argument" do
+        subject.expects(:execute).once.with("SayNumber", numeric)
+        subject.play_numeric(numeric)
+      end
+    end 
+    describe "#play_soundfile" do
+      let(:audiofile) { "tt-monkeys" }
+      it "should send the correct command Playback playing an audio file" do
+        subject.expects(:execute).once.with("Playback", audiofile)
+        # subject.expects(:execute).once.with("Playback", audiofile).returns([200, 1, nil])
+        subject.expects(:get_variable).once.with("PLAYBACKSTATUS").returns(PLAYBACK_SUCCESS)
+        subject.play_soundfile(audiofile)
+      end
+
+      it "should return false if playback fails" do
+        subject.expects(:execute).once.with("Playback", audiofile)
+        subject.expects(:get_variable).once.with("PLAYBACKSTATUS").returns('FAILED')
+        subject.play_soundfile(audiofile).should == false
+      end
+    end 
+
+  end#main describe
 end
