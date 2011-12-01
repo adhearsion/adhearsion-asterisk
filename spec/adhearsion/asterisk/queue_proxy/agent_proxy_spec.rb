@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module AhnAsterisk
+module Adhearsion::Asterisk
   class QueueProxy
     describe AgentProxy do
       let(:queue_name)  { 'foobar' }

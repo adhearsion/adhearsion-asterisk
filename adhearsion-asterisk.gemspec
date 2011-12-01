@@ -1,17 +1,17 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "ahn_asterisk/version"
+require "adhearsion/asterisk/version"
 
 Gem::Specification.new do |s|
-  s.name        = "ahn-asterisk"
-  s.version     = AhnAsterisk::VERSION
-  s.authors     = ["Ben Langfeld"]
-  s.email       = ["blangfeld@adhearsion.com"]
+  s.name        = "adhearsion-asterisk"
+  s.version     = Adhearsion::Asterisk::VERSION
+  s.authors     = ["Ben Langfeld", "Taylor Carpenter"]
+  s.email       = ["blangfeld@adhearsion.com", "taylor@codecafe.com"]
   s.homepage    = "http://adhearsion.com"
   s.summary     = %q{Asterisk specific features for Adhearsion}
   s.description = %q{An Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration}
 
-  s.rubyforge_project = "ahn-asterisk"
+  s.rubyforge_project = "adhearsion-asterisk"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

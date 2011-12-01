@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module AhnAsterisk
+module Adhearsion::Asterisk
   describe QueueProxy do
     let(:queue_name)  { 'foobar' }
     let(:mock_ee)     { mock 'Adhearsion::DialPlan::ExecutionEnvironment' }
@@ -14,7 +14,7 @@ module AhnAsterisk
     end
 
     it 'should return a QueueAgentsListProxy when #agents is called' do
-      subject.agents.should be_a AhnAsterisk::QueueProxy::QueueAgentsListProxy
+      subject.agents.should be_a Adhearsion::Asterisk::QueueProxy::QueueAgentsListProxy
     end
 
     describe '#join' do
@@ -134,7 +134,7 @@ module AhnAsterisk
       lambda {
         subject.expects(:exists?).once.returns false
         subject.waiting_count
-      }.should raise_error AhnAsterisk::QueueProxy::QueueDoesNotExistError
+      }.should raise_error Adhearsion::Asterisk::QueueProxy::QueueDoesNotExistError
     end
 
     it 'empty? should call waiting_count' do

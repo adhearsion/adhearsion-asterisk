@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module AhnAsterisk
+module Adhearsion::Asterisk
   describe 'A DialPlan::ExecutionEnvironment with the plugin loaded' do
     before(:all) { Adhearsion::Plugin.load }
 
@@ -311,7 +311,7 @@ module AhnAsterisk
       end
 
       it "should return an instance of QueueProxy" do
-        subject.queue("foobar").should be_a_kind_of AhnAsterisk::QueueProxy
+        subject.queue("foobar").should be_a_kind_of Adhearsion::Asterisk::QueueProxy
       end
 
       it "should set the QueueProxy's name" do

@@ -11,7 +11,7 @@ SimpleCov.start do
   add_filter "/vendor/"
 end
 
-require 'ahn_asterisk'
+require 'adhearsion/asterisk'
 require 'mocha'
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
