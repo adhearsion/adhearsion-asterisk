@@ -1,7 +1,7 @@
-ahn-asterisk
+adhearsion-asterisk
 ===========
 
-ahn-asterisk is an Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration.
+adhearsion-asterisk is an Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration.
 
 Features
 --------
@@ -17,7 +17,7 @@ Requirements
 Install
 -------
 
-Add `ahn-asterisk` to your Adhearsion app's Gemfile.
+Add `adhearsion-asterisk` to your Adhearsion app's Gemfile.
 
 Examples
 --------
@@ -30,9 +30,9 @@ Original author: Ben Langfeld
 
 Links
 -----
-* [Source](https://github.com/adhearsion/ahn-asterisk)
-* [Documentation](http://rdoc.info/github/adhearsion/ahn-asterisk/master/frames)
-* [Bug Tracker](https://github.com/adhearsion/ahn-asterisk/issues)
+* [Source](https://github.com/adhearsion/adhearsion-asterisk)
+* [Documentation](http://rdoc.info/github/adhearsion/adhearsion-asterisk/master/frames)
+* [Bug Tracker](https://github.com/adhearsion/adhearsion-asterisk/issues)
 
 Note on Patches/Pull Requests
 -----------------------------
