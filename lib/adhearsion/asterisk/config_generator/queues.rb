@@ -1,14 +1,13 @@
-require File.join(File.dirname(__FILE__), 'config_generator')
+require File.join(File.dirname(__FILE__), '../config_generator')
 
 module Adhearsion
   module Asterisk
-    module ConfigFileGenerators
-
+    class ConfigGenerator
       # This will generate a queues.conf file. If there is no documentation on what a method
       # actually does, take a look at the documentation for its original key/value pair in
       # an unedited queues.conf file. WARNING! Don't get too embedded with these method names.
       # I'm still not satisfied. These settings will be greatly abstracted eventually.
-      class Queues < AsteriskConfigGenerator
+      class Queues < ConfigGenerator
 
         DEFAULT_GENERAL_SECTION = {
           :autofill => "yes"
@@ -30,7 +29,7 @@ module Adhearsion
         end
 
         def to_s
-          AsteriskConfigGenerator.warning_message +
+          ConfigGenerator.warning_message +
           general_section.inject("[general]") { |section,(key,value)| section + "\n#{key}=#{value}" } + "\n\n" +
           queue_definitions.map(&:to_s).join("\n\n")
         end
@@ -46,7 +45,7 @@ module Adhearsion
         end
 
 
-        class QueueDefinition < AsteriskConfigGenerator
+        class QueueDefinition < ConfigGenerator
 
           DEFAULT_QUEUE_PROPERTIES = {
             :autofill          => 'yes',

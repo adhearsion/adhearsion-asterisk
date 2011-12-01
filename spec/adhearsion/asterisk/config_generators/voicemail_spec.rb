@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'adhearsion/asterisk/config_generators/voicemail.conf'
+require 'adhearsion/asterisk/config_generator/voicemail'
 
 describe 'Basic requirements of the Voicemail config generator' do
   attr_reader :config
   before :each do
-    @config = Adhearsion::Asterisk::ConfigFileGenerators::Voicemail.new
+    @config = Adhearsion::Asterisk::ConfigGenerator::Voicemail.new
   end
 
   it 'should have a [general] context' do
@@ -27,11 +27,11 @@ describe 'Defining recording-related settings of the Voicemail config file' do
 
   attr_reader :recordings
   before :each do
-    @recordings = Adhearsion::Asterisk::ConfigFileGenerators::Voicemail::RecordingDefinition.new
+    @recordings = Adhearsion::Asterisk::ConfigGenerator::Voicemail::RecordingDefinition.new
   end
 
   it 'the recordings setting setter' do
-    Adhearsion::Asterisk::ConfigFileGenerators::Voicemail.new.recordings.should be_a_kind_of recordings.class
+    Adhearsion::Asterisk::ConfigGenerator::Voicemail.new.recordings.should be_a_kind_of recordings.class
   end
 
   it 'recordings format should only allow a few options' do
@@ -52,7 +52,7 @@ describe 'Defining email-related Voicemail settings' do
 
   attr_reader :email
   before :each do
-    @email = Adhearsion::Asterisk::ConfigFileGenerators::Voicemail::EmailDefinition.new
+    @email = Adhearsion::Asterisk::ConfigGenerator::Voicemail::EmailDefinition.new
   end
 
   it 'the [] operator is overloaded to return conveniences for the body() and subject() methods' do
@@ -97,7 +97,7 @@ end
 describe 'A mailbox definition' do
   attr_reader :mailbox
   before :each do
-    @mailbox = Adhearsion::Asterisk::ConfigFileGenerators::Voicemail::ContextDefinition::MailboxDefinition.new("123")
+    @mailbox = Adhearsion::Asterisk::ConfigGenerator::Voicemail::ContextDefinition::MailboxDefinition.new("123")
   end
 
   it 'setting the name should be reflected in the to_hash form of the definition' do
@@ -111,13 +111,13 @@ describe 'A mailbox definition' do
   end
 
   it 'the mailbox number should be available in the mailbox_number getter' do
-    Adhearsion::Asterisk::ConfigFileGenerators::Voicemail::ContextDefinition::MailboxDefinition.new '123'
+    Adhearsion::Asterisk::ConfigGenerator::Voicemail::ContextDefinition::MailboxDefinition.new '123'
     mailbox.mailbox_number.should == '123'
   end
 
   it 'an ArgumentError should be raised if the mailbox_number is not numeric' do
     the_following_code {
-      Adhearsion::Asterisk::ConfigFileGenerators::Voicemail::ContextDefinition::MailboxDefinition.new("this is not numeric")
+      Adhearsion::Asterisk::ConfigGenerator::Voicemail::ContextDefinition::MailboxDefinition.new("this is not numeric")
     }.should raise_error ArgumentError
   end
 
@@ -151,7 +151,7 @@ end
 describe "A Voicemail context definition" do
 
   it "should ultimately add a [] context definition to the string output" do
-    voicemail = Adhearsion::Asterisk::ConfigFileGenerators::Voicemail.new
+    voicemail = Adhearsion::Asterisk::ConfigGenerator::Voicemail.new
     voicemail.context "monkeys" do |config|
       config.should be_a_kind_of voicemail.class::ContextDefinition
       config.mailbox 1234 do |mailbox|
@@ -165,12 +165,12 @@ describe "A Voicemail context definition" do
 
   it 'should raise a LocalJumpError if no block is given' do
     the_following_code {
-      Adhearsion::Asterisk::ConfigFileGenerators::Voicemail.new.context('lols')
+      Adhearsion::Asterisk::ConfigGenerator::Voicemail.new.context('lols')
     }.should raise_error LocalJumpError
   end
 
   it 'its string representation should begin with a context declaration' do
-    vm = Adhearsion::Asterisk::ConfigFileGenerators::Voicemail.new
+    vm = Adhearsion::Asterisk::ConfigGenerator::Voicemail.new
     vm.context("jay") {|_|}.to_s.starts_with?("[jay]").should be true
   end
 
@@ -200,7 +200,7 @@ describe 'An expansive example of the Voicemail config generator' do
   end
 
   it 'a huge, brittle integration test' do
-    vm = Adhearsion::Asterisk::ConfigFileGenerators::Voicemail.new do |voicemail|
+    vm = Adhearsion::Asterisk::ConfigGenerator::Voicemail.new do |voicemail|
       voicemail.context :default do |context|
         context.mailbox 123 do |mailbox|
           mailbox.name "Administrator"

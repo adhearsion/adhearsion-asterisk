@@ -58,6 +58,3 @@ module Adhearsion
     end
   end
 end
-
-# Read a file: cat a file
-# Parse a file: separate into a two dimensional hash

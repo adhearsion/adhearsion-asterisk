@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'adhearsion/asterisk/config_generators/agents.conf'
+require 'adhearsion/asterisk/config_generator/agents'
 
-module AgentsConfigFileGeneratorTestHelper
+module AgentsConfigGeneratorTestHelper
 
   def reset_agents!
-    @agents = Adhearsion::Asterisk::ConfigFileGenerators::Agents.new
+    @agents = Adhearsion::Asterisk::ConfigGenerator::Agents.new
   end
 
   def generated_config_has_pair(pair)
@@ -19,7 +19,7 @@ end
 
 describe "The agents.conf config file agents" do
 
-  include AgentsConfigFileGeneratorTestHelper
+  include AgentsConfigGeneratorTestHelper
 
   attr_reader :agents
   before(:each) do
@@ -173,7 +173,7 @@ end
 
 describe "The default agents.conf config file converted to this syntax" do
 
-  include AgentsConfigFileGeneratorTestHelper
+  include AgentsConfigGeneratorTestHelper
 
   attr_reader :default_config, :agents
   before(:each) do
@@ -223,8 +223,8 @@ agent => 1002,4321,Will Meadows
     agents.agent 1001, :password => 4321, :name => "Mark Spencer"
     agents.agent 1002, :password => 4321, :name => "Will Meadows"
 
-    cleaned_up_default_config = Adhearsion::Asterisk::ConfigFileGenerators::
-      AsteriskConfigGenerator.create_sanitary_hash_from(default_config)
+    cleaned_up_default_config =
+      Adhearsion::Asterisk::ConfigGenerator.create_sanitary_hash_from(default_config)
 
     cleaned_up_generated_config = agents.to_sanitary_hash
 
@@ -234,9 +234,9 @@ agent => 1002,4321,Will Meadows
 end
 
 
-describe "AgentsConfigFileGeneratorTestHelper" do
+describe "AgentsConfigGeneratorTestHelper" do
 
-  include AgentsConfigFileGeneratorTestHelper
+  include AgentsConfigGeneratorTestHelper
 
   attr_reader :agents
   before(:each) do

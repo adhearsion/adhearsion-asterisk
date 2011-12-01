@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'adhearsion/asterisk/config_generators/queues.conf'
+require 'adhearsion/asterisk/config_generator/queues'
 
-module QueuesConfigFileGeneratorTestHelper
+module QueuesConfigGeneratorTestHelper
 
   def reset_queues!
-    @queues = Adhearsion::Asterisk::ConfigFileGenerators::Queues.new
+    @queues = Adhearsion::Asterisk::ConfigGenerator::Queues.new
   end
 
   def generated_config_should_have_pair(pair)
@@ -22,7 +22,7 @@ end
 
 describe "The queues.conf config file generator" do
 
-  include QueuesConfigFileGeneratorTestHelper
+  include QueuesConfigGeneratorTestHelper
 
   attr_reader :queues
   before(:each) do
@@ -38,8 +38,8 @@ describe "The queues.conf config file generator" do
   end
 
   it 'should yield a Queues object in its constructor' do
-    Adhearsion::Asterisk::ConfigFileGenerators::Queues.new do |config|
-      config.should be_a_kind_of Adhearsion::Asterisk::ConfigFileGenerators::Queues
+    Adhearsion::Asterisk::ConfigGenerator::Queues.new do |config|
+      config.should be_a_kind_of Adhearsion::Asterisk::ConfigGenerator::Queues
     end
   end
 
@@ -51,7 +51,7 @@ end
 
 describe "The queues.conf config file queues's QueueDefinition" do
 
-  include QueuesConfigFileGeneratorTestHelper
+  include QueuesConfigGeneratorTestHelper
 
   attr_reader :queues
   before(:each) do
@@ -125,7 +125,7 @@ end
 
 describe "The private, helper methods in QueueDefinition" do
 
-  include QueuesConfigFileGeneratorTestHelper
+  include QueuesConfigGeneratorTestHelper
 
   attr_reader :queue
   before(:each) do
@@ -193,7 +193,7 @@ end
 
 describe 'The queues.conf config file generator when ran against a really big example' do
 
-  include QueuesConfigFileGeneratorTestHelper
+  include QueuesConfigGeneratorTestHelper
 
   attr_reader :queues, :default_config
   before(:each) do
@@ -250,7 +250,7 @@ CONFIG
 
   it "a sample config with multiple queues" do
 
-    generated = Adhearsion::Asterisk::ConfigFileGenerators::Queues.new do |config|
+    generated = Adhearsion::Asterisk::ConfigGenerator::Queues.new do |config|
       config.persistent_members true
       config.monitor_type :mix_monitor
 
@@ -294,8 +294,8 @@ CONFIG
       end
     end
 
-    cleaned_up_default_config = Adhearsion::Asterisk::ConfigFileGenerators::
-      AsteriskConfigGenerator.create_sanitary_hash_from(default_config)
+    cleaned_up_default_config =
+      Adhearsion::Asterisk::ConfigGenerator.create_sanitary_hash_from(default_config)
 
     cleaned_up_generated_config = generated.to_sanitary_hash
 
@@ -304,9 +304,9 @@ CONFIG
 
 end
 
-describe "ConfigFileGeneratorTestHelper" do
+describe "ConfigGeneratorTestHelper" do
 
-  include QueuesConfigFileGeneratorTestHelper
+  include QueuesConfigGeneratorTestHelper
 
   attr_reader :queues
 

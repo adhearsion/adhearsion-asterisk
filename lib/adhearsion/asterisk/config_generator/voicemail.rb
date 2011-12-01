@@ -1,9 +1,9 @@
-require File.join(File.dirname(__FILE__), 'config_generator')
+require File.join(File.dirname(__FILE__), '../config_generator')
 
 module Adhearsion
   module Asterisk
-    module ConfigFileGenerators
-      class Voicemail < AsteriskConfigGenerator
+    class ConfigGenerator
+      class Voicemail < ConfigGenerator
 
         DEFAULT_GENERAL_SECTION = {
           :format => :wav
@@ -62,7 +62,7 @@ module Adhearsion
 
         def to_s
           email_properties = @emails ? @emails.properties : {}
-          AsteriskConfigGenerator.warning_message +
+          ConfigGenerator.warning_message +
           "[general]\n" +
           properties.merge(email_properties).map { |(key,value)| "#{key}=#{value}" }.sort.join("\n") + "\n\n" +
           STATIC_ZONEMESSAGES_CONTEXT +
@@ -71,7 +71,7 @@ module Adhearsion
 
         private
 
-        class ContextDefinition < AsteriskConfigGenerator
+        class ContextDefinition < ConfigGenerator
 
           attr_reader :mailboxes
           def initialize(name)
@@ -141,7 +141,7 @@ module Adhearsion
           end
         end
 
-        class EmailDefinition < AsteriskConfigGenerator
+        class EmailDefinition < ConfigGenerator
           EMAIL_VARIABLE_CONVENIENCES = {
             :name             => '${VM_NAME}',
             :duration         => '${VM_DUR}',
@@ -204,7 +204,7 @@ module Adhearsion
 
         end
 
-        class RecordingDefinition < AsteriskConfigGenerator
+        class RecordingDefinition < ConfigGenerator
 
           attr_reader :properties
           def initialize

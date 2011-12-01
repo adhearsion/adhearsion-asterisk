@@ -1,9 +1,9 @@
-require File.join(File.dirname(__FILE__), 'config_generator')
+require File.join(File.dirname(__FILE__), '../config_generator')
 
 module Adhearsion
   module Asterisk
-    module ConfigFileGenerators
-      class Agents < AsteriskConfigGenerator
+    class ConfigGenerator
+      class Agents < ConfigGenerator
 
         attr_accessor :general_section, :agent_section, :agent_definitions, :agent_section_special
         def initialize
@@ -16,7 +16,7 @@ module Adhearsion
         end
 
         def to_s
-          AsteriskConfigGenerator.warning_message +
+          ConfigGenerator.warning_message +
           general_section.inject("[general]") { |section,(key,value)| section + "\n#{key}=#{value}" } +
           agent_section.inject("\n[agents]")  { |section,(key,value)| section + "\n#{key}=#{value}" } +
           agent_section_special.inject("")    { |section,(key,value)| section + "\n#{key} => #{value}" } +
