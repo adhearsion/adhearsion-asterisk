@@ -32,7 +32,7 @@ vm {
 
 echotest {
   play 'demo-echotest'
-  exec 'Echo'
+  execute 'Echo'
   play 'demo-echodone'
 }
 
@@ -40,7 +40,7 @@ saytime {
   t = Time.now
   date = t.to_date
   date_format = 'ABdY'
-  exec "SayUnixTime", t.to_i, date_format
+  execute "SayUnixTime", t.to_i, date_format
   play_time date, :format => date_format
 }
 
