@@ -6,7 +6,35 @@ adhearsion-asterisk is an Adhearsion Plugin providing Asterisk-specific dialplan
 Features
 --------
 
-* FIXME (list of features and unsolved problems)
+Dialplan methods
+
+  * agi
+  * execute
+  * verbose
+  * get_variable
+  * set_variable
+  * sip_add_header
+  * sip_get_header
+  * variable
+  * meetme
+  * voicemail
+  * voicemail_main
+  * queue
+  * play
+  * play!
+  * play_time
+  * play_numeric
+  * play_soundfile
+
+Asterisk configuration generators
+
+  * agents.conf
+  * queues.conf
+  * voicemail.conf
+
+### TODO
+
+  * Asterisk dynamic features (aka. features.conf)
 
 Requirements
 ------------
@@ -22,7 +50,7 @@ Add `adhearsion-asterisk` to your Adhearsion app's Gemfile.
 Examples
 --------
 
-## Dialplan
+### Dialplan
 
 
 ```ruby
@@ -62,7 +90,7 @@ supportagent {
 }
 ```
 
-## Config generation
+### Config generation
 
 Stand-alone example
 
@@ -86,7 +114,7 @@ Author
 Original author: [Ben Langfeld](https://github.com/benlangfeld)
 
 Contributors:
-* [Taylor Carpenter](https://github.com/taylor)
+  * [Taylor Carpenter](https://github.com/taylor)
 
 Links
 -----
