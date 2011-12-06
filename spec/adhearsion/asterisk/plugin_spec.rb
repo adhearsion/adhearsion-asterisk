@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Adhearsion::Asterisk
   describe 'A DialPlan::ExecutionEnvironment with the plugin loaded' do
-    before(:all) { Adhearsion::Plugin.load }
+    before(:all) { Adhearsion::Plugin.load_plugins }
 
     let(:mock_call) { stub_everything 'Call', :originating_voip_platform => :punchblock }
 
