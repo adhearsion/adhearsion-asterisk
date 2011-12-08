@@ -2,7 +2,19 @@ module Adhearsion
   module Asterisk
     PLAYBACK_SUCCESS = 'SUCCESS' unless defined? PLAYBACK_SUCCESS
 
+
     class Plugin < Adhearsion::Plugin
+      DYNAMIC_FEATURE_EXTENSIONS = {
+        :attended_transfer => lambda do |options|
+          variable "TRANSFER_CONTEXT" => options[:context] if options && options.has_key?(:context)
+          extend_dynamic_features_with "atxfer"
+        end,
+        :blind_transfer => lambda do |options|
+          variable "TRANSFER_CONTEXT" => options[:context] if options && options.has_key?(:context)
+          extend_dynamic_features_with 'blindxfer'
+        end
+      } unless defined? DYNAMIC_FEATURE_EXTENSIONS
+
       dialplan :agi do |name, *params|
         component = Punchblock::Component::Asterisk::AGI::Command.new :name => name, :params => params
         execute_component_and_await_completion component
@@ -42,6 +54,66 @@ module Adhearsion
       #
       dialplan :verbose do |message, level = nil|
         agi 'VERBOSE', message, level
+      end
+
+      # A high-level way of enabling features you create/uncomment from features.conf.
+      #
+      # Certain Symbol features you enable (as defined in DYNAMIC_FEATURE_EXTENSIONS) have optional
+      # arguments that you can also specify here. The usage examples show how to do this.
+      #
+      # Usage examples:
+      #
+      #   enable_feature :attended_transfer                        # Enables "atxfer"
+      #
+      #   enable_feature :attended_transfer, :context => "my_dial" # Enables "atxfer" and then
+      #                                                            # sets "TRANSFER_CONTEXT" to :context's value
+      #
+      #   enable_feature :blind_transfer, :context => 'my_dial'    # Enables 'blindxfer' and sets TRANSFER_CONTEXT
+      #
+      #   enable_feature "foobar"                                  # Enables "foobar"
+      #
+      #   enable_feature("dup"); enable_feature("dup")             # Enables "dup" only once.
+      #
+      # dialplan :voicemail do |*args|
+      #   options_hash    = args.last.kind_of?(Hash) ? args.pop : {}
+      #   mailbox_number  = args.shift
+      #   greeting_option = options_hash.delete :greeting
+      #
+      dialplan :enable_feature do |*args|
+        feature_name, optional_options = args.flatten
+
+        if DYNAMIC_FEATURE_EXTENSIONS.has_key? feature_name
+          instance_exec(optional_options, &DYNAMIC_FEATURE_EXTENSIONS[feature_name])
+        else
+          unless optional_options.nil? or optional_options.empty?
+            raise ArgumentError, "You cannot supply optional options when the feature name is " +
+                                 "not internally recognized!"
+          end
+          extend_dynamic_features_with feature_name
+        end
+      end
+
+      # Disables a feature name specified in features.conf. If you're disabling it, it was probably
+      # set by enable_feature().
+      #
+      # @param [String] feature_name
+      dialplan :disable_feature do |feature_name|
+        enabled_features_variable = variable 'DYNAMIC_FEATURES'
+        enabled_features = enabled_features_variable.split('#')
+        if enabled_features.include? feature_name
+          enabled_features.delete feature_name
+          variable 'DYNAMIC_FEATURES' => enabled_features.join('#')
+        end
+      end
+
+      # helper method that should probably should private...
+      dialplan :extend_dynamic_features_with do |feature_name|
+        current_variable = variable("DYNAMIC_FEATURES") || ''
+        enabled_features = current_variable.split '#'
+        unless enabled_features.include? feature_name
+          enabled_features << feature_name
+          variable "DYNAMIC_FEATURES" => enabled_features.join('#')
+        end
       end
 
       #
