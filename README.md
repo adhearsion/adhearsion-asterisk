@@ -25,16 +25,14 @@ Dialplan methods
   * play_time
   * play_numeric
   * play_soundfile
+  * enable_feature
+  * disable_feature
 
 Asterisk configuration generators
 
   * agents.conf
   * queues.conf
   * voicemail.conf
-
-### TODO
-
-  * Asterisk dynamic features (aka. features.conf)
 
 Requirements
 ------------
@@ -88,6 +86,13 @@ salesagent {
 supportagent {
   queue('support').join!
 }
+
+operator {
+  enable_feature :blind_transfer
+  dial extension, :options => "Tt"
+}
+
+
 ```
 
 ### Config generation
