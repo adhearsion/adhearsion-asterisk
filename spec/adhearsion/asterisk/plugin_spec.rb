@@ -44,6 +44,90 @@ module Adhearsion::Asterisk
       end
     end
 
+    describe '#enable_feature' do
+      it 'it should fetch the variable for DYNAMIC_FEATURES at first' do
+        subject.expects(:variable).once.with("DYNAMIC_FEATURES").throws(:got_variable)
+        expect {
+          subject.enable_feature :foobar
+        }.to throw_symbol :got_variable
+      end
+
+      it 'should check Adhearsion::Asterisk::Plugin::DYNAMIC_FEATURE_EXTENSIONS mapping for configuration setters' do
+        feature_name = :attended_transfer
+
+        assertion = lambda do |arg|
+          arg.should == :this_is_the_right_arg
+          throw :inside_assertion!
+        end
+
+        # I had to do this ugly hack because of a bug in Flexmock which prevented me from mocking out Hash#[]  :(
+        # FIXME: mock Hash
+        #        ...DYNAMIC_FEATURE_EXTENSIONS.expects(feature_name => assertion)
+
+        old_hash_feature_extension = Adhearsion::Asterisk::Plugin::DYNAMIC_FEATURE_EXTENSIONS[feature_name]
+        begin
+          Adhearsion::Asterisk::Plugin::DYNAMIC_FEATURE_EXTENSIONS[feature_name] = assertion
+   
+          subject.expects(:enable_feature).once.with(feature_name, :this_is_the_right_arg).throws :inside_assertion!
+          expect { subject.enable_feature(feature_name, :this_is_the_right_arg)}.to throw_symbol :inside_assertion!
+        ensure
+          Adhearsion::Asterisk::Plugin::DYNAMIC_FEATURE_EXTENSIONS[feature_name] = old_hash_feature_extension
+        end
+      end
+
+      it 'should separate enabled features with a "#"' do
+        subject.expects(:variable).once.with("DYNAMIC_FEATURES").returns("one")
+        subject.expects(:variable).once.with("DYNAMIC_FEATURES" => 'one#bar')
+        subject.enable_feature "bar"
+      end
+
+      it 'should not add duplicate enabled dynamic features' do
+        subject.expects(:variable).once.returns('eins#zwei')
+        subject.enable_feature "eins"
+      end
+
+      it 'should raise an ArgumentError if optional options are given when DYNAMIC_FEATURE_EXTENSIONS does not have a key for the feature name' do
+        expect { subject.enable_feature :this_is_not_recognized,
+                                        :these_features => "are not going to be recognized"
+               }.to raise_error ArgumentError
+      end
+
+      it 'enabling :attended_transfer should actually enable the atxfer feature' do
+        subject.expects(:variable).once.with("DYNAMIC_FEATURES").returns ''
+        subject.expects(:variable).once.with("DYNAMIC_FEATURES" => 'atxfer')
+        subject.enable_feature :attended_transfer
+      end
+
+      it 'the :context optional option when enabling :attended_transfer should set the TRANSFER_CONTEXT variable to the String supplied as a Hash value' do
+        context_name = "direct_dial"
+        subject.expects(:variable).once.with("DYNAMIC_FEATURES").returns ''
+        subject.expects(:variable).once.with("DYNAMIC_FEATURES" => 'atxfer')
+        subject.expects(:variable).once.with("TRANSFER_CONTEXT" => context_name)
+        subject.enable_feature :attended_transfer, :context => context_name
+      end
+
+      it 'enabling :attended_transfer should not add a duplicate if atxfer has been enabled, but it should still set the TRANSFER_CONTEXT variable' do
+        context_name = 'blah'
+        subject.expects(:variable).once.with('DYNAMIC_FEATURES').returns 'atxfer'
+        subject.expects(:variable).once.with('TRANSFER_CONTEXT' => context_name)
+        subject.enable_feature :attended_transfer, :context => context_name
+      end
+    end
+
+    describe '#disable_feature' do
+      it "should properly remove the feature from the DYNAMIC_FEATURES variable" do
+        subject.expects(:variable).once.with('DYNAMIC_FEATURES').returns 'foobar#qaz'
+        subject.expects(:variable).once.with('DYNAMIC_FEATURES' => 'qaz')
+        subject.disable_feature "foobar"
+      end
+
+      it "should not re-set the variable if the feature wasn't enabled in the first place" do
+        subject.expects(:variable).once.with('DYNAMIC_FEATURES').returns 'atxfer'
+        subject.expects(:variable).never
+        subject.disable_feature "jay"
+      end
+    end
+
     describe "#variable" do
       it "should call set_variable when Hash argument given" do
         subject.expects(:set_variable).once.with :ohai, "ur_home_erly"
