@@ -31,10 +31,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency %q<mocha>, [">= 0"]
   s.add_development_dependency %q<bones>
   s.add_development_dependency %q<guard-rspec>
-  if RUBY_PLATFORM =~ /darwin/
-    s.add_development_dependency %q<growl_notify>
-    s.add_development_dependency %q<rb-fsevent>
-  elsif RUBY_PLATFORM =~ /linux/
-    gem 'rb-inotify', :require => false
-  end
+  s.add_development_dependency 'ruby_gntp'
 end

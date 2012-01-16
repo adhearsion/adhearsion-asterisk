@@ -2,12 +2,12 @@ require 'spec_helper'
 
 module Adhearsion::Asterisk
   describe 'A DialPlan::ExecutionEnvironment with the plugin loaded' do
-    before(:all) { Adhearsion::Plugin.load_plugins }
+    before(:all) { Adhearsion::Plugin.load_methods }
 
     let(:mock_call) { stub_everything 'Call', :originating_voip_platform => :punchblock }
 
     subject do
-      Adhearsion::DialPlan::ExecutionEnvironment.create mock_call, :adhearsion
+      Adhearsion::CallController.new mock_call
     end
 
     describe '#agi' do
@@ -67,7 +67,7 @@ module Adhearsion::Asterisk
         old_hash_feature_extension = Adhearsion::Asterisk::Plugin::DYNAMIC_FEATURE_EXTENSIONS[feature_name]
         begin
           Adhearsion::Asterisk::Plugin::DYNAMIC_FEATURE_EXTENSIONS[feature_name] = assertion
-   
+
           subject.expects(:enable_feature).once.with(feature_name, :this_is_the_right_arg).throws :inside_assertion!
           expect { subject.enable_feature(feature_name, :this_is_the_right_arg)}.to throw_symbol :inside_assertion!
         ensure
@@ -494,7 +494,8 @@ module Adhearsion::Asterisk
         end
       end
 
-    end 
+    end
+
     describe "#play_time" do
       let(:date) { Date.parse('2011-10-24') }
       let(:date_format) { 'ABdY' }
@@ -516,14 +517,16 @@ module Adhearsion::Asterisk
         subject.play_time(time)
       end
 
-    end 
+    end
+
     describe "#play_numeric" do
       let(:numeric) { 20 }
       it "should send the correct command SayNumber playing a numeric argument" do
         subject.expects(:execute).once.with("SayNumber", numeric)
         subject.play_numeric(numeric)
       end
-    end 
+    end
+
     describe "#play_soundfile" do
       let(:audiofile) { "tt-monkeys" }
       it "should send the correct command Playback playing an audio file" do
@@ -538,7 +541,47 @@ module Adhearsion::Asterisk
         subject.expects(:get_variable).once.with("PLAYBACKSTATUS").returns('FAILED')
         subject.play_soundfile(audiofile).should == false
       end
-    end 
+    end
 
+    describe "#stream_file" do
+      let(:allowed_digits)  { '35' }
+      let(:prompt)          { 'tt-monkeys' }
+
+      let :output_params do
+        {
+          :name => 'STREAM FILE',
+          :params => [
+            'tt-monkeys',
+            '35'
+          ]
+        }
+      end
+
+      let(:output_component) do
+        Punchblock::Component::Asterisk::AGI::Command.new output_params
+      end
+
+      let :reason do
+        Punchblock::Component::Asterisk::AGI::Command::Complete::Success.new :code => 200,
+                                                                             :result => 5,
+                                                                             :data => 'endpos=5000'
+      end
+
+      before do
+        output_component
+        Punchblock::Component::Asterisk::AGI::Command.expects(:new).once.with(output_params).returns output_component
+        output_component.expects(:complete_event).at_least_once.returns mock('success', :reason => reason)
+      end
+
+      it "plays the correct output" do
+        subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
+        subject.stream_file prompt, allowed_digits
+      end
+
+      it "returns a single digit amongst the allowed when pressed" do
+        subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
+        subject.stream_file(prompt, allowed_digits).should == '5'
+      end
+    end # describe #stream_file
   end#main describe
 end
