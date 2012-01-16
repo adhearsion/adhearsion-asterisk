@@ -435,18 +435,28 @@ module Adhearsion
       # @return [String|nil] The pressed digit, or nil if nothing was pressed
       #
       dialplan :stream_file do |argument, digits = '0123456789#*'|
-        output_component = ::Punchblock::Component::Asterisk::AGI::Command.new :name => "STREAM FILE",
-                                                                               :params => [
-                                                                                 argument,
-                                                                                 digits
-                                                                               ]
         begin
+          output_component = ::Punchblock::Component::Asterisk::AGI::Command.new :name => "STREAM FILE",
+                                                                                 :params => [
+                                                                                   argument,
+                                                                                   digits
+                                                                                 ]
           execute_component_and_await_completion output_component
+
+          reason = output_component.complete_event.reason
+
+          case reason.result
+          when 0
+            raise Adhearsion::PlaybackError if reason.data == "endpos=0"
+            nil
+          when -1
+            raise Adhearsion::PlaybackError
+          else
+            [reason.result].pack 'U*'
+          end
         rescue StandardError => e
           raise Adhearsion::PlaybackError, "Output failed for argument #{argument.inspect}"
         end
-
-        output_component.complete_event.reason.result.to_s
       end
 
     end#class

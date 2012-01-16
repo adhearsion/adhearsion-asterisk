@@ -561,10 +561,13 @@ module Adhearsion::Asterisk
         Punchblock::Component::Asterisk::AGI::Command.new output_params
       end
 
+      let(:result) { 53 }
+      let(:endpos) { '5000' }
+
       let :reason do
         Punchblock::Component::Asterisk::AGI::Command::Complete::Success.new :code => 200,
-                                                                             :result => 5,
-                                                                             :data => 'endpos=5000'
+                                                                             :result => result,
+                                                                             :data => "endpos=#{endpos}"
       end
 
       before do
@@ -581,6 +584,34 @@ module Adhearsion::Asterisk
       it "returns a single digit amongst the allowed when pressed" do
         subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
         subject.stream_file(prompt, allowed_digits).should == '5'
+      end
+
+      context 'when nothing was pressed' do
+        let(:result) { 0 }
+
+        it "returns nil" do
+          subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
+          subject.stream_file(prompt, allowed_digits).should == nil
+        end
+      end
+
+      context 'when output fails' do
+        let(:result) { -1 }
+
+        it "raises Adhearsion::PlaybackError" do
+          subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
+          lambda { subject.stream_file prompt, allowed_digits }.should raise_error Adhearsion::PlaybackError
+        end
+      end
+
+      context 'when output fails to open' do
+        let(:result) { 0 }
+        let(:endpos) { '0' }
+
+        it "raises Adhearsion::PlaybackError" do
+          subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
+          lambda { subject.stream_file prompt, allowed_digits }.should raise_error Adhearsion::PlaybackError
+        end
       end
     end # describe #stream_file
   end#main describe
