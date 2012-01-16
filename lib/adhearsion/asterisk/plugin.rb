@@ -334,7 +334,7 @@ module Adhearsion
 
         execute "SayUnixTime", epoch, timezone, format
       end
-      
+
       #Executes SayNumber with the passed argument.
       #
       # @param [Numeric|String] Numeric argument, or a string contanining numbers.

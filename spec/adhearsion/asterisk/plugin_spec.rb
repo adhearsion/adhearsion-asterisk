@@ -2,12 +2,12 @@ require 'spec_helper'
 
 module Adhearsion::Asterisk
   describe 'A DialPlan::ExecutionEnvironment with the plugin loaded' do
-    before(:all) { Adhearsion::Plugin.load }
+    before(:all) { Adhearsion::Plugin.load_methods }
 
     let(:mock_call) { stub_everything 'Call', :originating_voip_platform => :punchblock }
 
     subject do
-      Adhearsion::DialPlan::ExecutionEnvironment.create mock_call, :adhearsion
+      Adhearsion::CallController.new mock_call
     end
 
     describe '#agi' do
@@ -410,7 +410,8 @@ module Adhearsion::Asterisk
         end
       end
 
-    end 
+    end
+
     describe "#play_time" do
       let(:date) { Date.parse('2011-10-24') }
       let(:date_format) { 'ABdY' }
@@ -432,14 +433,16 @@ module Adhearsion::Asterisk
         subject.play_time(time)
       end
 
-    end 
+    end
+
     describe "#play_numeric" do
       let(:numeric) { 20 }
       it "should send the correct command SayNumber playing a numeric argument" do
         subject.expects(:execute).once.with("SayNumber", numeric)
         subject.play_numeric(numeric)
       end
-    end 
+    end
+
     describe "#play_soundfile" do
       let(:audiofile) { "tt-monkeys" }
       it "should send the correct command Playback playing an audio file" do
@@ -454,7 +457,7 @@ module Adhearsion::Asterisk
         subject.expects(:get_variable).once.with("PLAYBACKSTATUS").returns('FAILED')
         subject.play_soundfile(audiofile).should == false
       end
-    end 
+    end
 
   end#main describe
 end
