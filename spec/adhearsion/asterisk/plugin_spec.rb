@@ -459,5 +459,45 @@ module Adhearsion::Asterisk
       end
     end
 
+    describe "#stream_file" do
+      let(:allowed_digits)  { '35' }
+      let(:prompt)          { 'tt-monkeys' }
+
+      let :output_params do
+        {
+          :name => 'STREAM FILE',
+          :params => [
+            'tt-monkeys',
+            '35'
+          ]
+        }
+      end
+
+      let(:output_component) do
+        Punchblock::Component::Asterisk::AGI::Command.new output_params
+      end
+
+      let :reason do
+        Punchblock::Component::Asterisk::AGI::Command::Complete::Success.new :code => 200,
+                                                                             :result => 5,
+                                                                             :data => 'endpos=5000'
+      end
+
+      before do
+        output_component
+        Punchblock::Component::Asterisk::AGI::Command.expects(:new).once.with(output_params).returns output_component
+        output_component.expects(:complete_event).at_least_once.returns mock('success', :reason => reason)
+      end
+
+      it "plays the correct output" do
+        subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
+        subject.stream_file prompt, allowed_digits
+      end
+
+      it "returns a single digit amongst the allowed when pressed" do
+        subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
+        subject.stream_file(prompt, allowed_digits).should == '5'
+      end
+    end # describe #stream_file
   end#main describe
 end

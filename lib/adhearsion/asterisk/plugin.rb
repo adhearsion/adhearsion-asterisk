@@ -354,6 +354,29 @@ module Adhearsion
         get_variable('PLAYBACKSTATUS') == PLAYBACK_SUCCESS
       end
 
+      #
+      # Plays a single output, not only files, accepting interruption by one of the digits specified
+      # Currently still stops execution, will be fixed soon in Punchblock
+      #
+      # @param [Object] String or Hash specifying output and options
+      # @param [String] String with the digits that are allowed to interrupt output
+      # @return [String|nil] The pressed digit, or nil if nothing was pressed
+      #
+      dialplan :stream_file do |argument, digits = '0123456789#*'|
+        output_component = ::Punchblock::Component::Asterisk::AGI::Command.new :name => "STREAM FILE",
+                                                                               :params => [
+                                                                                 argument,
+                                                                                 digits
+                                                                               ]
+        begin
+          execute_component_and_await_completion output_component
+        rescue StandardError => e
+          raise Adhearsion::PlaybackError, "Output failed for argument #{argument.inspect}"
+        end
+
+        output_component.complete_event.reason.result.to_s
+      end
+
     end#class
   end#module
 end#module
