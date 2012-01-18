@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require '<%= name %>'
-
-# Put your code here
