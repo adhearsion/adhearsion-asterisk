@@ -1,5 +1,8 @@
 # develop
 
+# v0.1.1 - 2012-01-18
+  * Depend on Adhearsion properly
+
 # v0.1.0 - 2012-01-17
   * A whole bunch of new stuff
 
