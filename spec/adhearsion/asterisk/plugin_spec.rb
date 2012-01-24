@@ -22,7 +22,7 @@ module Adhearsion::Asterisk
       end
 
       it 'should execute an AGI command with the specified name and parameters and return the response code, response and data' do
-        Punchblock::Component::Asterisk::AGI::Command.any_instance.stubs :complete_event => mock('Complete', :resource => complete_event)
+        Punchblock::Component::Asterisk::AGI::Command.any_instance.stubs :complete_event => complete_event
 
         subject.expects(:execute_component_and_await_completion).once.with expected_agi_command
         values = subject.agi 'Dial', '4044754842', 15
