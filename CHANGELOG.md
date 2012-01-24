@@ -1,4 +1,5 @@
 # develop
+  * Fix a bug that prevented agi actions from completing properly due to accessing their completion reason incorrectly
 
 # v0.1.1 - 2012-01-18
   * Depend on Adhearsion properly
