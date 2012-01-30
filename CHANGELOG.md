@@ -1,4 +1,6 @@
 # develop
+  * Update to use Adhearsion's changed Plugin semantics (no more dialplan hooks)
+  * Monkeypatch Adhearsion::CallController with Asterisk-specific methods
 
 # v0.1.2 - 2012-01-24
   * Fix a bug that prevented agi actions from completing properly due to accessing their completion reason incorrectly
