@@ -1,4 +1,6 @@
 # develop
+
+# v0.1.3 - 2012-01-30
   * Update to use Adhearsion's changed Plugin semantics (no more dialplan hooks)
   * Monkeypatch Adhearsion::CallController with Asterisk-specific overloads
 
