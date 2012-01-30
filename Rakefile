@@ -1,9 +1,4 @@
-begin
-  require 'bones'
-rescue LoadError
-  abort '### Please install the "bones" gem ###'
-end
-
+require 'bundler/setup'
 require 'bundler/gem_tasks'
 
 task :default => :spec
