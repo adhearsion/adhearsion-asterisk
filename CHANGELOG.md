@@ -1,5 +1,9 @@
 # develop
 
+# v0.2.0 - 2012-03-22
+  * Update to work with Adhearsion 2.0.0.rc2
+  * Remove overloaded `CallController#play` and `#play!` - we should use Adhearsion's core auto-detection
+
 # v0.1.3 - 2012-01-30
   * Update to use Adhearsion's changed Plugin semantics (no more dialplan hooks)
   * Monkeypatch Adhearsion::CallController with Asterisk-specific overloads
