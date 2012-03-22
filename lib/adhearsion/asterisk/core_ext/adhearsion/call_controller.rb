@@ -33,7 +33,7 @@ module Adhearsion
     def play(*arguments)
       begin
         play! arguments
-      rescue Adhearsion::PlaybackError => e
+      rescue CallController::Output::PlaybackError => e
         return false
       end
       true
@@ -50,7 +50,7 @@ module Adhearsion
           result &= play_numeric(argument) || play_soundfile(argument)
         end
       end
-      raise Adhearsion::PlaybackError if !result
+      raise CallController::Output::PlaybackError unless result
     end
 
     #
@@ -74,15 +74,15 @@ module Adhearsion
 
         case reason.result
         when 0
-          raise Adhearsion::PlaybackError if reason.data == "endpos=0"
+          raise CallController::Output::PlaybackError if reason.data == "endpos=0"
           nil
         when -1
-          raise Adhearsion::PlaybackError
+          raise CallController::Output::PlaybackError
         else
           [reason.result].pack 'U*'
         end
       rescue StandardError => e
-        raise Adhearsion::PlaybackError, "Output failed for argument #{argument.inspect}"
+        raise CallController::Output::PlaybackError, "Output failed for argument #{argument.inspect}"
       end
     end
   end

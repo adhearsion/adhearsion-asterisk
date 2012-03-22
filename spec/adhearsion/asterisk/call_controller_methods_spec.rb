@@ -415,13 +415,13 @@ module Adhearsion::Asterisk
         end
 
         it 'should return false if an audio file cannot be found' do
-          subject.expects(:play!).with([audiofile]).raises(Adhearsion::PlaybackError)
+          subject.expects(:play!).with([audiofile]).raises(Adhearsion::CallController::Output::PlaybackError)
           subject.play(audiofile).should be false
 
         end
 
         it 'should return false when audio files cannot be found' do
-          subject.expects(:play!).with([audiofile, audiofile2]).raises(Adhearsion::PlaybackError)
+          subject.expects(:play!).with([audiofile, audiofile2]).raises(Adhearsion::CallController::Output::PlaybackError)
           subject.play(audiofile, audiofile2).should be false
         end
       end
@@ -468,7 +468,7 @@ module Adhearsion::Asterisk
             subject.expects(:play_time).with([audiofile]).returns(false)
             subject.expects(:play_numeric).with(audiofile).returns(false)
             subject.expects(:play_soundfile).with(audiofile).returns(false)
-            lambda { subject.play!(audiofile) }.should raise_error(Adhearsion::PlaybackError)
+            lambda { subject.play!(audiofile) }.should raise_error(Adhearsion::CallController::Output::PlaybackError)
           end
         end
 
@@ -488,7 +488,7 @@ module Adhearsion::Asterisk
             subject.expects(:play_soundfile).with(audiofile).returns(false)
             subject.expects(:play_numeric).with(audiofile2).returns(false)
             subject.expects(:play_soundfile).with(audiofile2).returns(false)
-            lambda { subject.play!(audiofile, audiofile2) }.should raise_error(Adhearsion::PlaybackError)
+            lambda { subject.play!(audiofile, audiofile2) }.should raise_error(Adhearsion::CallController::Output::PlaybackError)
           end
         end
 
@@ -598,7 +598,7 @@ module Adhearsion::Asterisk
 
           it "raises Adhearsion::PlaybackError" do
             subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
-            lambda { subject.stream_file prompt, allowed_digits }.should raise_error Adhearsion::PlaybackError
+            lambda { subject.stream_file prompt, allowed_digits }.should raise_error Adhearsion::CallController::Output::PlaybackError
           end
         end
 
@@ -608,7 +608,7 @@ module Adhearsion::Asterisk
 
           it "raises Adhearsion::PlaybackError" do
             subject.expects(:execute_component_and_await_completion).once.with(output_component).returns(output_component)
-            lambda { subject.stream_file prompt, allowed_digits }.should raise_error Adhearsion::PlaybackError
+            lambda { subject.stream_file prompt, allowed_digits }.should raise_error Adhearsion::CallController::Output::PlaybackError
           end
         end
       end # describe #stream_file

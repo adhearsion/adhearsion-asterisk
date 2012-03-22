@@ -18,15 +18,15 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency %q<adhearsion>, [">= 2.0.0.alpha2"]
+  s.add_runtime_dependency %q<adhearsion>, [">= 2.0.0.rc2"]
   s.add_runtime_dependency %q<activesupport>, [">= 3.0.10"]
 
-  s.add_development_dependency %q<bundler>, ["~> 1.0.0"]
+  s.add_development_dependency %q<bundler>, [">= 1.0.0"]
   s.add_development_dependency %q<rspec>, [">= 2.5.0"]
   s.add_development_dependency %q<ci_reporter>, [">= 1.6.3"]
   s.add_development_dependency %q<simplecov>, [">= 0"]
   s.add_development_dependency %q<simplecov-rcov>, [">= 0"]
-  s.add_development_dependency %q<yard>, ["~> 0.6.0"]
+  s.add_development_dependency %q<yard>, [">= 0.6.0"]
   s.add_development_dependency %q<rake>, [">= 0"]
   s.add_development_dependency %q<mocha>, [">= 0"]
   s.add_development_dependency %q<bones>
