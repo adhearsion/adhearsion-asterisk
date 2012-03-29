@@ -1,4 +1,6 @@
 # develop
+
+# v0.3.0 - 2012-03-29
   # Remove the monkey-patched version of `CallController#stream_file` since Punchblock now supports stopping output
 
 # v0.2.0 - 2012-03-22
