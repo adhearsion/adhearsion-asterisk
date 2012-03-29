@@ -1,4 +1,5 @@
 # develop
+  # Remove the monkey-patched version of `CallController#stream_file` since Punchblock now supports stopping output
 
 # v0.2.0 - 2012-03-22
   * Update to work with Adhearsion 2.0.0.rc2
