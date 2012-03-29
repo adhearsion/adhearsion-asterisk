@@ -1,5 +1,8 @@
 # develop
 
+# v0.3.0 - 2012-03-29
+  # Remove the monkey-patched version of `CallController#stream_file` since Punchblock now supports stopping output
+
 # v0.2.0 - 2012-03-22
   * Update to work with Adhearsion 2.0.0.rc2
   * Remove overloaded `CallController#play` and `#play!` - we should use Adhearsion's core auto-detection
