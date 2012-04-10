@@ -140,4 +140,4 @@ Note on Patches/Pull Requests
 Copyright
 ---------
 
-Copyright (c) 2011 Ben Langfeld. MIT licence (see LICENSE for details).
+Copyright (c) 2012 Adhearsion Foundation Inc. MIT license (see LICENSE for details).
