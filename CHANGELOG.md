@@ -1,3 +1,6 @@
+# v1.1.0
+  # Adhearsion::Call now exposes the AGI context through #agi_context
+
 # v1.0.0
   # Stable release
 
