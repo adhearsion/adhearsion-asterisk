@@ -1,3 +1,6 @@
+# v1.1.1
+  * Fix error in header name for #agi_context
+
 # v1.1.0
   # Adhearsion::Call now exposes the AGI context through #agi_context
 
