@@ -2,13 +2,13 @@
   * Fix error in header name for #agi_context
 
 # v1.1.0
-  # Adhearsion::Call now exposes the AGI context through #agi_context
+  * Adhearsion::Call now exposes the AGI context through #agi_context
 
 # v1.0.0
-  # Stable release
+  * Stable release
 
 # v0.3.0 - 2012-03-29
-  # Remove the monkey-patched version of `CallController#stream_file` since Punchblock now supports stopping output
+  * Remove the monkey-patched version of `CallController#stream_file` since Punchblock now supports stopping output
 
 # v0.2.0 - 2012-03-22
   * Update to work with Adhearsion 2.0.0.rc2
