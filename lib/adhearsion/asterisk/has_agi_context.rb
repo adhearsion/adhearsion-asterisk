@@ -2,7 +2,7 @@ module Adhearsion
   module Asterisk
     module HasAgiContext
      def agi_context
-       self[:agi_context]
+       self[:x_agi_context]
      end
     end
 
