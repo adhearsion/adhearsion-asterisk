@@ -52,45 +52,59 @@ Examples
 
 
 ```ruby
-vm {
-  voicemail "8000"
-}
-
-echotest {
-  play 'demo-echotest'
-  execute 'Echo'
-  play 'demo-echodone'
-}
-
-saytime {
-  t = Time.now
-  date = t.to_date
-  date_format = 'ABdY'
-  execute "SayUnixTime", t.to_i, date_format
-  play_time date, :format => date_format
-}
-
-callqueue {
-  case extension
-  when 5001
-    queue 'sales'
-  when 5002
-    queue 'support'
+class Voicemail < Adhearsion::CallController
+  def run
+    voicemail "8000"
   end
-}
+end
 
-salesagent {
-  queue('sales').join!
-}
+class EchoTest < Adhearsion::CallController
+  def run
+    play 'demo-echotest'
+    execute 'Echo'
+    play 'demo-echodone'
+  end
+end
 
-supportagent {
-  queue('support').join!
-}
+class SayTime < Adhearsion::CallController
+  def run
+    t = Time.now
+    date = t.to_date
+    date_format = 'ABdY'
+    execute "SayUnixTime", t.to_i, date_format
+    play_time date, :format => date_format
+  end
+end
 
-operator {
-  enable_feature :blind_transfer
-  dial extension, :options => "Tt"
-}
+class CallQueue < Adhearsion::CallController
+  def run
+    case variables[:x_agi_extension]
+    when 5001
+      queue 'sales'
+    when 5002
+      queue 'support'
+    end
+  end
+end
+
+class SalesAgent < Adhearsion::CallController
+  def run
+    queue('sales').join!
+  end
+end
+
+class SupportAgent < Adhearsion::CallController
+  def run
+    queue('support').join!
+  end
+end
+
+class Operator < Adhearsion::CallController
+  def run
+    enable_feature :blind_transfer
+    dial extension, :options => "Tt"
+  end
+end
 
 
 ```
