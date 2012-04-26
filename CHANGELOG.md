@@ -1,3 +1,6 @@
+# develop
+  * Feature: Added helper to execute AMI actions easily
+
 # v1.1.1
   * Fix error in header name for #agi_context
 
