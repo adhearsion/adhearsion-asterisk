@@ -19,6 +19,8 @@ module Adhearsion
     #
     # @yield [Punchblock::Event::Asterisk::AMI::Event] block to handle each event resulting from the action
     #
+    # @return [Punchblock::Event::Complete] action complete event
+    #
     # @example Execute a CoreShowChannels action, handling each channel event:
     #
     #   Adhearsion::Asterisk.execute_ami_action('CoreShowChannels') { |channel| puts channel.inspect }
