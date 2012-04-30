@@ -1,4 +1,6 @@
 # develop
+
+# v1.2.0
   * Feature: Added helper to execute AMI actions easily
 
 # v1.1.1
