@@ -27,7 +27,7 @@ module Adhearsion
     #
     def self.execute_ami_action(name, options = {}, &block)
       component = Punchblock::Component::Asterisk::AMI::Action.new :name => name, :params => options
-      component.register_event_handler &block if block
+      component.register_event_handler(Punchblock::Event::Asterisk::AMI::Event, &block) if block
       Adhearsion::PunchblockPlugin.execute_component component
       component.complete_event
     end
