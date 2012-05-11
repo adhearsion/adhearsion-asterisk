@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'adhearsion/asterisk/config_generator/voicemail'
+require 'ostruct'
 
 describe 'Basic requirements of the Voicemail config generator' do
   attr_reader :config
