@@ -31,5 +31,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency %q<mocha>, [">= 0"]
   s.add_development_dependency %q<bones>
   s.add_development_dependency %q<guard-rspec>
-  s.add_development_dependency 'ruby_gntp'
+  s.add_development_dependency %q<ruby_gntp>
+  s.add_development_dependency %q<thor>, ["~> 0.14.0"]
 end
