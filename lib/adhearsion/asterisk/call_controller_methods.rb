@@ -367,6 +367,16 @@ module Adhearsion
         end
       end
 
+      #Executes SayDigits with the passed argument.
+      #
+      # @param [Numeric|String] Numeric argument, or a string contanining numbers.
+      # @return [Boolean] Returns false if the argument could not be played.
+      def play_digits(argument)
+        if argument.kind_of?(Numeric) || argument =~ /^\d+$/
+          execute "SayDigits", argument
+        end
+      end
+
       # Instruct Asterisk to play a sound file to the channel.
       #
       # @param [String] File name to play in the Asterisk convention, without extension.
