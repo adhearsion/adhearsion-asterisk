@@ -436,6 +436,14 @@ module Adhearsion::Asterisk
         end
       end
 
+      describe "#play_digits" do
+        let(:numeric) { 20 }
+        it "should send the correct command SayDigits playing a numeric argument" do
+          subject.expects(:execute).once.with("SayDigits", numeric)
+          subject.play_digits(numeric)
+        end
+      end
+
       describe "#play_soundfile" do
         let(:audiofile) { "tt-monkeys" }
         it "should send the correct command Playback playing an audio file" do
