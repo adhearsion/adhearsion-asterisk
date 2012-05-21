@@ -19,12 +19,25 @@ module Adhearsion::Asterisk
           end
         end
 
-        it 'should execute an AGI command with the specified name and parameters and return the response code, response and data' do
-          Punchblock::Component::Asterisk::AGI::Command.any_instance.stubs :complete_event => complete_event
+        before { Punchblock::Component::Asterisk::AGI::Command.any_instance.stubs :complete_event => complete_event }
 
+        it 'should execute an AGI command with the specified name and parameters and return the response code, response and data' do
           subject.expects(:execute_component_and_await_completion).once.with expected_agi_command
           values = subject.agi 'Dial', '4044754842', 15
           values.should == [200, 1, 'foobar']
+        end
+
+        context 'when AGI terminates because of a hangup' do
+          let :complete_event do
+            Punchblock::Event::Complete.new.tap do |c|
+              c.reason = Punchblock::Event::Complete::Hangup.new
+            end
+          end
+
+          it 'should raise Adhearsion::Call::Hangup' do
+            subject.expects(:execute_component_and_await_completion).once.with expected_agi_command
+            lambda { subject.agi 'Dial', '4044754842', 15 }.should raise_error(Adhearsion::Call::Hangup)
+          end
         end
       end
 

@@ -18,6 +18,7 @@ module Adhearsion
         component = Punchblock::Component::Asterisk::AGI::Command.new :name => name, :params => params
         execute_component_and_await_completion component
         complete_reason = component.complete_event.reason
+        raise Adhearsion::Call::Hangup if complete_reason.is_a?(Punchblock::Event::Complete::Hangup)
         [:code, :result, :data].map { |p| complete_reason.send p }
       end
 
