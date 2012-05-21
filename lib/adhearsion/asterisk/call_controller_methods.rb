@@ -360,7 +360,6 @@ module Adhearsion
       #Executes SayNumber with the passed argument.
       #
       # @param [Numeric|String] Numeric argument, or a string contanining numbers.
-      # @return [Boolean] Returns false if the argument could not be played.
       def play_numeric(argument)
         execute "SayNumber", argument
       end
@@ -368,7 +367,6 @@ module Adhearsion
       #Executes SayDigits with the passed argument.
       #
       # @param [Numeric|String] Numeric argument, or a string contanining numbers.
-      # @return [Boolean] Returns false if the argument could not be played.
       def play_digits(argument)
         execute "SayDigits", argument
       end
