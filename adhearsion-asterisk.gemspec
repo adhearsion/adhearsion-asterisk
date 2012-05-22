@@ -5,8 +5,8 @@ require "adhearsion/asterisk/version"
 Gem::Specification.new do |s|
   s.name        = "adhearsion-asterisk"
   s.version     = Adhearsion::Asterisk::VERSION
-  s.authors     = ["Ben Langfeld", "Taylor Carpenter"]
-  s.email       = ["blangfeld@adhearsion.com", "taylor@codecafe.com"]
+  s.authors     = ["Ben Langfeld", "Taylor Carpenter", "Luca Pradovera"]
+  s.email       = ["blangfeld@adhearsion.com", "taylor@codecafe.com", "lpradovera@mojolingo.com"]
   s.homepage    = "http://adhearsion.com"
   s.summary     = %q{Asterisk specific features for Adhearsion}
   s.description = %q{An Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration}
