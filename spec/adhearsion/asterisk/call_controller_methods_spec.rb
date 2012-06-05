@@ -457,6 +457,27 @@ module Adhearsion::Asterisk
         end
       end
 
+      describe "#play_tones" do
+        context "should send the correct command Playtones playing tones" do
+          before do
+            subject.expects(:execute).once.with("Playtones", "!950/330,!1400/330,!1800/330,0")
+          end
+
+          it "given as a string" do
+            subject.play_tones("!950/330,!1400/330,!1800/330,0")
+          end
+
+          it "given as an array" do
+            subject.play_tones(["!950/330","!1400/330","!1800/330","0"])
+          end
+
+          it "and sleep for the duration when instructed" do
+            subject.expects(:sleep).once.with(0.99)
+            subject.play_tones("!950/330,!1400/330,!1800/330,0", true)
+          end
+        end
+      end
+
       describe "#play_soundfile" do
         let(:audiofile) { "tt-monkeys" }
         it "should send the correct command Playback playing an audio file" do
