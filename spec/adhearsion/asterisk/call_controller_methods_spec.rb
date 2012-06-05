@@ -470,6 +470,11 @@ module Adhearsion::Asterisk
           it "given as an array" do
             subject.play_tones(["!950/330","!1400/330","!1800/330","0"])
           end
+
+          it "and sleep for the duration when instructed" do
+            subject.expects(:sleep).once.with(0.99)
+            subject.play_tones("!950/330,!1400/330,!1800/330,0", true)
+          end
         end
       end
 
