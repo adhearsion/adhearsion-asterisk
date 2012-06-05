@@ -372,6 +372,17 @@ module Adhearsion
         execute "SayDigits", argument
       end
 
+      #Executes Playtones with the passed argument.
+      #
+      # @param [String|Array] Array or comma-separated string of tones.
+      # @param [Boolean] Whether to wait for the tones to finish (defaults to false).
+      def play_tones(argument, wait = false)
+        tones = [*argument].join(",")
+        execute("Playtones", tones).tap do
+          sleep tones.scan(/(?<=\/)\d+/).map(&:to_i).sum.to_f / 1000 if wait
+        end
+      end
+
       # Instruct Asterisk to play a sound file to the channel.
       #
       # @param [String] File name to play in the Asterisk convention, without extension.
