@@ -18,6 +18,7 @@ module Adhearsion
         component = Punchblock::Component::Asterisk::AGI::Command.new :name => name, :params => params
         execute_component_and_await_completion component
         complete_reason = component.complete_event.reason
+        raise Adhearsion::Call::Hangup if complete_reason.is_a?(Punchblock::Event::Complete::Hangup)
         [:code, :result, :data].map { |p| complete_reason.send p }
       end
 
@@ -360,10 +361,25 @@ module Adhearsion
       #Executes SayNumber with the passed argument.
       #
       # @param [Numeric|String] Numeric argument, or a string contanining numbers.
-      # @return [Boolean] Returns false if the argument could not be played.
       def play_numeric(argument)
-        if argument.kind_of?(Numeric) || argument =~ /^\d+$/
-          execute "SayNumber", argument
+        execute "SayNumber", argument
+      end
+
+      #Executes SayDigits with the passed argument.
+      #
+      # @param [Numeric|String] Numeric argument, or a string contanining numbers.
+      def play_digits(argument)
+        execute "SayDigits", argument
+      end
+
+      #Executes Playtones with the passed argument.
+      #
+      # @param [String|Array] Array or comma-separated string of tones.
+      # @param [Boolean] Whether to wait for the tones to finish (defaults to false).
+      def play_tones(argument, wait = false)
+        tones = [*argument].join(",")
+        execute("Playtones", tones).tap do
+          sleep tones.scan(/(?<=\/)\d+/).map(&:to_i).sum.to_f / 1000 if wait
         end
       end
 

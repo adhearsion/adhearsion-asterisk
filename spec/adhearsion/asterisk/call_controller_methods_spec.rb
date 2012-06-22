@@ -19,12 +19,25 @@ module Adhearsion::Asterisk
           end
         end
 
-        it 'should execute an AGI command with the specified name and parameters and return the response code, response and data' do
-          Punchblock::Component::Asterisk::AGI::Command.any_instance.stubs :complete_event => complete_event
+        before { Punchblock::Component::Asterisk::AGI::Command.any_instance.stubs :complete_event => complete_event }
 
+        it 'should execute an AGI command with the specified name and parameters and return the response code, response and data' do
           subject.expects(:execute_component_and_await_completion).once.with expected_agi_command
           values = subject.agi 'Dial', '4044754842', 15
           values.should == [200, 1, 'foobar']
+        end
+
+        context 'when AGI terminates because of a hangup' do
+          let :complete_event do
+            Punchblock::Event::Complete.new.tap do |c|
+              c.reason = Punchblock::Event::Complete::Hangup.new
+            end
+          end
+
+          it 'should raise Adhearsion::Call::Hangup' do
+            subject.expects(:execute_component_and_await_completion).once.with expected_agi_command
+            lambda { subject.agi 'Dial', '4044754842', 15 }.should raise_error(Adhearsion::Call::Hangup)
+          end
         end
       end
 
@@ -433,6 +446,35 @@ module Adhearsion::Asterisk
         it "should send the correct command SayNumber playing a numeric argument" do
           subject.expects(:execute).once.with("SayNumber", numeric)
           subject.play_numeric(numeric)
+        end
+      end
+
+      describe "#play_digits" do
+        let(:numeric) { 20 }
+        it "should send the correct command SayDigits playing a numeric argument" do
+          subject.expects(:execute).once.with("SayDigits", numeric)
+          subject.play_digits(numeric)
+        end
+      end
+
+      describe "#play_tones" do
+        context "should send the correct command Playtones playing tones" do
+          before do
+            subject.expects(:execute).once.with("Playtones", "!950/330,!1400/330,!1800/330,0")
+          end
+
+          it "given as a string" do
+            subject.play_tones("!950/330,!1400/330,!1800/330,0")
+          end
+
+          it "given as an array" do
+            subject.play_tones(["!950/330","!1400/330","!1800/330","0"])
+          end
+
+          it "and sleep for the duration when instructed" do
+            subject.expects(:sleep).once.with(0.99)
+            subject.play_tones("!950/330,!1400/330,!1800/330,0", true)
+          end
         end
       end
 

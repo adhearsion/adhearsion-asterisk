@@ -5,8 +5,8 @@ require "adhearsion/asterisk/version"
 Gem::Specification.new do |s|
   s.name        = "adhearsion-asterisk"
   s.version     = Adhearsion::Asterisk::VERSION
-  s.authors     = ["Ben Langfeld", "Taylor Carpenter"]
-  s.email       = ["blangfeld@adhearsion.com", "taylor@codecafe.com"]
+  s.authors     = ["Ben Langfeld", "Taylor Carpenter", "Luca Pradovera"]
+  s.email       = ["blangfeld@adhearsion.com", "taylor@codecafe.com", "lpradovera@mojolingo.com"]
   s.homepage    = "http://adhearsion.com"
   s.summary     = %q{Asterisk specific features for Adhearsion}
   s.description = %q{An Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration}
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency %q<adhearsion>, ["~> 2.0"]
   s.add_runtime_dependency %q<activesupport>, [">= 3.0.10"]
+  s.add_runtime_dependency %q<jruby-openssl> if RUBY_PLATFORM == 'java'
 
   s.add_development_dependency %q<bundler>, [">= 1.0.0"]
   s.add_development_dependency %q<rspec>, [">= 2.5.0"]
@@ -31,5 +32,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency %q<mocha>, [">= 0"]
   s.add_development_dependency %q<bones>
   s.add_development_dependency %q<guard-rspec>
-  s.add_development_dependency 'ruby_gntp'
+  s.add_development_dependency %q<ruby_gntp>
+  s.add_development_dependency %q<thor>, ["~> 0.14.0"]
 end

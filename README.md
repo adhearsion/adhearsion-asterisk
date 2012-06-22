@@ -25,6 +25,7 @@ Dialplan methods
   * play_time
   * play_numeric
   * play_soundfile
+  * play_tones
   * enable_feature
   * disable_feature
 
