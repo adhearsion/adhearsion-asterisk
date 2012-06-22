@@ -1,5 +1,9 @@
 # develop
 
+# v1.2.1
+  * Feature: added play_tone for DTMF in-call generation
+  * Bugfix: "code is an undefined method" errors on executing AMI methods directly (issue #6)
+
 # v1.2.0
   * Feature: Added helper to execute AMI actions easily
 
