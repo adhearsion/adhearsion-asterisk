@@ -493,6 +493,40 @@ module Adhearsion::Asterisk
           subject.play_soundfile(audiofile).should == false
         end
       end
+
+      describe '#generate_silence' do
+        context 'executes Playtones with 0 as an argument if it' do
+          before do
+            command = Punchblock::Component::Asterisk::AGI::Command.new :name => "EXEC Playtones", :params => ["0"]
+            @expect_command = subject.expects(:execute_component_and_await_completion).with(command)
+          end
+
+          it 'is not given a block' do
+            @expect_command.once
+            subject.generate_silence
+          end
+
+          it 'is given a block, which it then yields' do
+            @expect_command.times(3)
+            expect { |b| subject.generate_silence { b.to_proc.call; run; run } }.to yield_with_no_args
+          end
+
+          it 'is given a block, and copies any instance variables' do
+            @expect_command.once
+
+            iv = nil
+            subject.instance_variable_set(:@foo, "bar")
+
+            subject.generate_silence do
+              iv = @foo.dup
+              @foo << "baz"
+            end
+
+            iv.should eq("bar")
+            subject.instance_variable_get(:@foo).should eq("barbaz")
+          end
+        end
+      end
     end
   end#main describe
 end

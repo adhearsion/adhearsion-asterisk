@@ -391,6 +391,49 @@ module Adhearsion
         execute "Playback", argument
         get_variable('PLAYBACKSTATUS') == PLAYBACK_SUCCESS
       end
+
+      #
+      # Generates silence in the background, just once until some other sound is generated, or
+      # continuously for the duration of a given block. Silence is normally only generated under
+      # specific circumstances but this method will explicitly generate it, which can be useful
+      # in some scenarios.
+      #
+      # Note that the Playtones command must be available and the transmit_silence option must be
+      # enabled in asterisk.conf. Also note that the given block is executed using instance_eval
+      # and that imposes one important restriction. If the silence is interrupted outside the scope
+      # of the block (e.g. calling play in another method) then it won't be restarted until
+      # execution returns to the scope. However, it is safe to call generate_silence again when
+      # outside the scope. Instance variables may be used as they are copied and copied back but be
+      # careful handling immutable objects outside the scope. If you're unsure, don't use a block.
+      #
+      def generate_silence(&block)
+        component = Punchblock::Component::Asterisk::AGI::Command.new :name => "EXEC Playtones", :params => ["0"]
+        execute_component_and_await_completion component
+        GenerateSilenceProxy.proxy_for(self, &block) if block_given?
+      end
+
+      class GenerateSilenceProxy
+        def self.proxy_for(target, &block)
+          proxy = new(target)
+          ivs = target.instance_variables
+          ivs.each { |iv| proxy.instance_variable_set iv, target.instance_variable_get(iv) }
+
+          proxy.instance_eval(&block).tap do
+            ivs = proxy.instance_variables - [:@_target]
+            ivs.each { |iv| target.instance_variable_set iv, proxy.instance_variable_get(iv) }
+          end
+        end
+
+        def initialize(target)
+          @_target = target
+        end
+
+        def method_missing(*args)
+          @_target.send(*args).tap do
+            @_target.generate_silence
+          end
+        end
+      end
     end
   end
 end
