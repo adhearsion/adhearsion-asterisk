@@ -525,6 +525,21 @@ module Adhearsion::Asterisk
             iv.should eq("bar")
             subject.instance_variable_get(:@foo).should eq("barbaz")
           end
+
+          it 'is given a block, which proxies any calls to #respond_to?' do
+            @expect_command.once
+
+            run_result = nil
+            foobar_result = nil
+
+            subject.generate_silence do
+              run_result = respond_to? :run
+              foobar_result = respond_to? :foobar
+            end
+
+            run_result.should be_true
+            foobar_result.should be_false
+          end
         end
       end
     end

@@ -413,6 +413,8 @@ module Adhearsion
       end
 
       class GenerateSilenceProxy
+        delegate :respond_to?, :to => :@_target
+
         def self.proxy_for(target, &block)
           proxy = new(target)
           ivs = target.instance_variables
