@@ -526,7 +526,7 @@ module Adhearsion::Asterisk
             subject.instance_variable_get(:@foo).should eq("barbaz")
           end
 
-          it 'is given a block, which proxies any calls to #respond_to?' do
+          it 'is given a block, which proxies calls to #respond_to? via #respond_to_missing?' do
             @expect_command.once
 
             run_result = nil
