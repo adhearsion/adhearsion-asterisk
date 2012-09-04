@@ -34,4 +34,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency %q<guard-rspec>
   s.add_development_dependency %q<ruby_gntp>
   s.add_development_dependency %q<thor>, ["~> 0.14.0"]
+  s.add_development_dependency 'aruba', "~> 0.4"
+  s.add_development_dependency 'cucumber'
+  s.add_development_dependency 'guard-cucumber'
 end
