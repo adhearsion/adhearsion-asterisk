@@ -1,4 +1,6 @@
 # develop
+
+# v1.3.0
   * Feature: Added explicit silence generation
 
 # v1.2.1
