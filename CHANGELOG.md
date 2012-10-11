@@ -1,5 +1,8 @@
 # develop
 
+# v1.3.0
+  * Feature: Added explicit silence generation
+
 # v1.2.1
   * Feature: added play_tone for DTMF in-call generation
   * Bugfix: "code is an undefined method" errors on executing AMI methods directly (issue #6)
