@@ -1,4 +1,5 @@
 # develop
+  * Feature: Added explicit silence generation
 
 # v1.2.1
   * Feature: added play_tone for DTMF in-call generation
