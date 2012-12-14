@@ -1,4 +1,6 @@
 # develop
+
+# v1.3.1
   * Bugfix: Fixed `#execute` to concatenate multiple arguments correctly
 
 # v1.3.0
