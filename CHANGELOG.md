@@ -1,4 +1,5 @@
 # develop
+  * Bugfix: Fixed `#execute` to concatenate multiple arguments correctly
 
 # v1.3.0
   * Feature: Added explicit silence generation
