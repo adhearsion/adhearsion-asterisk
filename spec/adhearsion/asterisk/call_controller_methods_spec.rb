@@ -43,7 +43,7 @@ module Adhearsion::Asterisk
 
       describe '#execute' do
         it 'calls #agi and prefixes the command with EXEC' do
-          subject.expects(:agi).once.with 'EXEC Dial', '4044754842', 15
+          subject.expects(:agi).once.with 'EXEC Dial', '4044754842,15'
           subject.execute 'Dial', '4044754842', 15
         end
       end

@@ -35,7 +35,7 @@ module Adhearsion
       # @see http://www.voip-info.org/wiki/view/Asterisk+-+documentation+of+application+commands Asterisk Dialplan Commands
       #
       def execute(name, *params)
-        agi "EXEC #{name}", *params
+        agi "EXEC #{name}", params.join(',')
       end
 
       #
