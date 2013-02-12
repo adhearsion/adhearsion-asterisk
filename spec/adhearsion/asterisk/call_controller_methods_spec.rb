@@ -4,7 +4,9 @@ module Adhearsion::Asterisk
   describe CallControllerMethods do
     describe "mixed in to a CallController" do
 
-      subject { Adhearsion::CallController.new mock('Call') }
+      let(:call) { mock('Call') }
+
+      subject { Adhearsion::CallController.new call }
 
       before { Adhearsion::CallController.mixin CallControllerMethods }
 
@@ -539,6 +541,51 @@ module Adhearsion::Asterisk
 
             run_result.should be_true
             foobar_result.should be_false
+          end
+        end
+      end
+
+      describe "#goto" do
+        let(:context) { "foo" }
+        let(:extension) { "s" }
+        let(:priority) { 1 }
+
+        it "sets the call to not hangup after execution" do
+          call.expects(:[]=).with(:ahn_prevent_hangup, true)
+          subject.expects(:execute).with('Goto', context, extension, priority)
+          subject.expects(:agi).with("ASYNCAGI BREAK").at_most_once
+          subject.goto(context, extension, priority)
+        end
+
+        it "releases control of the call using ASYNCAGI BREAK" do
+          call.expects(:[]=).with(:ahn_prevent_hangup, true).at_most_once
+          subject.expects(:execute).with('Goto', context, extension, priority).at_most_once
+          subject.expects(:agi).with("ASYNCAGI BREAK").once
+          subject.goto(context, extension, priority)
+        end
+
+        context "number of arguments" do
+          before :each do
+            call.expects(:[]=).with(:ahn_prevent_hangup, true).at_most_once
+            subject.expects(:agi).with("ASYNCAGI BREAK").at_most_once
+          end
+          it "executes Goto with 3 arguments when passed all 3" do
+            subject.expects(:execute).with('Goto', context, extension, priority)
+            subject.goto(context, extension, priority)
+          end
+          it "executes Goto with 2 arguments when passed 2" do
+            subject.expects(:execute).with('Goto', context, extension)
+            subject.goto(context, extension)
+          end
+          it "executes Goto with 1 arguments when passed 1" do
+            subject.expects(:execute).with('Goto', context)
+            subject.goto(context)
+          end
+          it "raises an Argument Error if there isn't at least one argument" do
+            expect { subject.goto() }.to raise_error ArgumentError, "You need to pass at least one parameter"
+          end
+          it "raises an Argument Error if there are more than 3 arguments" do
+            expect { subject.goto(context, extension, priority, 42) }.to raise_error ArgumentError, "You need to pass at most three parameters"
           end
         end
       end
