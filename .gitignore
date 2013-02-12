@@ -8,3 +8,4 @@ coverage
 vendor/bundle
 tags
 .rbenv-version
+tmp
