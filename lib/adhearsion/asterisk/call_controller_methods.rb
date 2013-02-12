@@ -412,6 +412,20 @@ module Adhearsion
         GenerateSilenceProxy.proxy_for(self, &block) if block_given?
       end
 
+      #
+      # Go to a specified context, extension and priority
+      # This requires us to relinquish control of the call.
+      # Execution will continue until the user hangs up, but the channel will be no longer available
+      #
+      def goto(*args)
+        raise ArgumentError, "You need to pass at least one parameter" if args.size == 0
+        raise ArgumentError, "You need to pass at most three parameters" if args.size > 3
+        call[:ahn_prevent_hangup] = true
+        exec_args = args.unshift 'Goto'
+        execute *exec_args
+        agi "ASYNCAGI BREAK"
+      end
+
       class GenerateSilenceProxy
         def self.proxy_for(target, &block)
           proxy = new(target)
