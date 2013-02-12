@@ -581,12 +581,6 @@ module Adhearsion::Asterisk
             subject.expects(:execute).with('Goto', context)
             subject.goto(context)
           end
-          it "raises an Argument Error if there isn't at least one argument" do
-            expect { subject.goto() }.to raise_error ArgumentError, "You need to pass at least one parameter"
-          end
-          it "raises an Argument Error if there are more than 3 arguments" do
-            expect { subject.goto(context, extension, priority, 42) }.to raise_error ArgumentError, "You need to pass at most three parameters"
-          end
         end
       end
     end

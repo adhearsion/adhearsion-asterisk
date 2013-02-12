@@ -417,12 +417,10 @@ module Adhearsion
       # This requires us to relinquish control of the call.
       # Execution will continue until the user hangs up, but the channel will be no longer available
       #
-      def goto(*args)
-        raise ArgumentError, "You need to pass at least one parameter" if args.size == 0
-        raise ArgumentError, "You need to pass at most three parameters" if args.size > 3
+      def goto(context, extension = :nothing, priority = :nothing)
         call[:ahn_prevent_hangup] = true
-        exec_args = args.unshift 'Goto'
-        execute *exec_args
+        args = ['Goto', context, extension, priority].reject { |v| v == :nothing }
+        execute *args
         agi "ASYNCAGI BREAK"
       end
 
