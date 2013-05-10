@@ -19,19 +19,16 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency %q<adhearsion>, ["~> 2.0"]
-  s.add_runtime_dependency %q<activesupport>, [">= 3.0.10"]
+  s.add_runtime_dependency %q<activesupport>, ["~> 3.0"]
   s.add_runtime_dependency %q<jruby-openssl> if RUBY_PLATFORM == 'java'
 
-  s.add_development_dependency %q<bundler>, [">= 1.0.0"]
-  s.add_development_dependency %q<rspec>, [">= 2.5.0"]
-  s.add_development_dependency %q<ci_reporter>, [">= 1.6.3"]
+  s.add_development_dependency %q<bundler>, ["~> 1.0"]
+  s.add_development_dependency %q<rspec>, ["~> 2.5"]
+  s.add_development_dependency %q<ci_reporter>, ["~> 1.6"]
   s.add_development_dependency %q<simplecov>, [">= 0"]
   s.add_development_dependency %q<simplecov-rcov>, [">= 0"]
-  s.add_development_dependency %q<yard>, [">= 0.6.0"]
+  s.add_development_dependency %q<yard>, ["~> 0.6"]
   s.add_development_dependency %q<rake>, [">= 0"]
-  s.add_development_dependency %q<mocha>, [">= 0"]
-  s.add_development_dependency %q<bones>
   s.add_development_dependency %q<guard-rspec>
   s.add_development_dependency %q<ruby_gntp>
-  s.add_development_dependency %q<thor>, ["~> 0.14.0"]
 end

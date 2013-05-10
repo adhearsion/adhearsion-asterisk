@@ -412,6 +412,19 @@ module Adhearsion
         GenerateSilenceProxy.proxy_for(self, &block) if block_given?
       end
 
+      #
+      # Go to a specified context, extension and priority
+      # This requires us to relinquish control of the call.
+      # Execution will continue until the user hangs up, but the channel will be no longer available
+      #
+      def goto(context, extension = :nothing, priority = :nothing)
+        call[:ahn_prevent_hangup] = true
+        args = ['Goto', context, extension, priority].reject { |v| v == :nothing }
+        execute *args
+        set_variable 'PUNCHBLOCK_END_ON_ASYNCAGI_BREAK', 'true'
+        agi "ASYNCAGI BREAK"
+      end
+
       class GenerateSilenceProxy
         def self.proxy_for(target, &block)
           proxy = new(target)
