@@ -8,7 +8,7 @@ module ConfigurationManagerTestHelper
 
   def mock_config_manager_for(config_string)
     new_config_manager_with("bogus filename").tap do |manager|
-      File.expects(:open).returns config_string
+      File.should_receive(:open).and_return config_string
     end
   end
 

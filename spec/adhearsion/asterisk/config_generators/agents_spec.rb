@@ -250,8 +250,8 @@ describe "AgentsConfigGeneratorTestHelper" do
 
   it "generated_config_has_pair() works properly with two pairs" do
     @agents = mock "A fake agents with just one pair"
-    @agents.expects(:conf).twice.returns("[general]\n\nqaz=qwerty\nagent => 1,2,3")
- 
+    @agents.should_receive(:conf).twice.and_return("[general]\n\nqaz=qwerty\nagent => 1,2,3")
+
     generated_config_has_pair(:qaz => "qwerty").should be true
     generated_config_has_pair(:foo => "bar").should be false
   end

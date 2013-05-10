@@ -421,6 +421,7 @@ module Adhearsion
         call[:ahn_prevent_hangup] = true
         args = ['Goto', context, extension, priority].reject { |v| v == :nothing }
         execute *args
+        set_variable 'PUNCHBLOCK_END_ON_ASYNCAGI_BREAK', 'true'
         agi "ASYNCAGI BREAK"
       end
 
