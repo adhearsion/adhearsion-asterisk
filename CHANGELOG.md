@@ -1,4 +1,6 @@
 # develop
+
+# v1.4.0
   * Feature: Add `#goto`, which will pass a call to another context/extension/priority and disconnect from Adhearsion
 
 # v1.3.1
