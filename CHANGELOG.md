@@ -1,4 +1,5 @@
 # develop
+  * Feature: Add `#goto`, which will pass a call to another context/extension/priority and disconnect from Adhearsion
 
 # v1.3.1
   * Bugfix: Fixed `#execute` to concatenate multiple arguments correctly
