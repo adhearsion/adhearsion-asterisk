@@ -352,6 +352,7 @@ module Adhearsion
                      format = 'BdY' unless format.present?
                      argument.to_time.to_i
                    end
+        format = "ABdY \'digits/at\' IMp" if format.empty?
 
         return false if epoch.nil?
 
