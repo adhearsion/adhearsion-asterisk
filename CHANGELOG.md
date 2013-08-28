@@ -1,4 +1,6 @@
 # develop
+
+# v1.5.0
   * Feature: Add `#say_characters`, which uses `SayDigits` to override adhearsion's built in SSML-generating method
 
 # v1.4.0
