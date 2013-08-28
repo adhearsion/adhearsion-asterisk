@@ -459,6 +459,14 @@ module Adhearsion::Asterisk
         end
       end
 
+      describe "#say_characters" do
+        let(:numeric) { 20 }
+        it "uses asterisk's SayDigits functionality" do
+          subject.should_receive(:execute).once.with("SayDigits", numeric)
+          subject.say_characters(numeric)
+        end
+      end
+
       describe "#play_tones" do
         context "should send the correct command Playtones playing tones" do
           before do
