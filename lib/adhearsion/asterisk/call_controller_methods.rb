@@ -372,6 +372,14 @@ module Adhearsion
         execute "SayDigits", argument
       end
 
+      #Executes SayDigits with the passed argument.
+      #This will override adhearsion's native #say_characters method, which does not currently work with asterisk
+      #
+      # @param [Numeric|String] Numeric argument, or a string contanining numbers.
+      def say_characters(argument)
+        play_digits argument
+      end
+
       #Executes Playtones with the passed argument.
       #
       # @param [String|Array] Array or comma-separated string of tones.
