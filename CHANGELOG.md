@@ -1,5 +1,8 @@
 # develop
 
+# v1.5.0
+  * Feature: Add `#say_characters`, which uses `SayDigits` to override adhearsion's built in SSML-generating method
+
 # v1.4.0
   * Feature: Add `#goto`, which will pass a call to another context/extension/priority and disconnect from Adhearsion
 
