@@ -1,11 +1,10 @@
+require 'adhearsion/asterisk/config_generator/agents'
+require 'adhearsion/asterisk/config_generator/queues'
+require 'adhearsion/asterisk/config_generator/voicemail'
+
 module Adhearsion
   module Asterisk
     class ConfigGenerator
-      extend ActiveSupport::Autoload
-
-      autoload :Agents
-      autoload :Queues
-      autoload :Voicemail
 
       SECTION_TITLE = /(\[[\w_-]+\])/
 

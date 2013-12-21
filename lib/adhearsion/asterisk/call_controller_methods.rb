@@ -1,3 +1,5 @@
+require 'adhearsion/asterisk/queue_proxy'
+
 module Adhearsion
   module Asterisk
     PLAYBACK_SUCCESS = 'SUCCESS' unless defined? PLAYBACK_SUCCESS

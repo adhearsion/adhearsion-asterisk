@@ -1,11 +1,9 @@
+require 'adhearsion/asterisk/queue_proxy/agent_proxy'
+require 'adhearsion/asterisk/queue_proxy/queue_agents_list_proxy'
+
 module Adhearsion
   module Asterisk
     class QueueProxy
-
-      extend ActiveSupport::Autoload
-
-      autoload :AgentProxy
-      autoload :QueueAgentsListProxy
 
       class << self
         def format_join_hash_key_arguments(options)
