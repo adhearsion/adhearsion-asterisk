@@ -4,7 +4,7 @@ module Adhearsion::Asterisk
   describe CallControllerMethods do
     describe "mixed in to a CallController" do
 
-      let(:call) { mock('Call') }
+      let(:call) { double('Call') }
 
       subject { Adhearsion::CallController.new call }
 
