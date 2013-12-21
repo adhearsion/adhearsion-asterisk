@@ -1,4 +1,6 @@
 # develop
+
+# v1.5.1
   * Remove dependency on activesupport
 
 # v1.5.0
