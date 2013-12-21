@@ -5,8 +5,8 @@ module Adhearsion::Asterisk
     describe QueueAgentsListProxy do
       let(:queue_name)    { 'foobar' }
       let(:agent_channel) { "Agent/123" }
-      let(:mock_ee)       { mock 'Adhearsion::DialPlan::ExecutionEnvironment' }
-      let(:mock_queue)    { mock('QueueProxy', :environment => mock_ee, :name => queue_name).as_null_object }
+      let(:mock_ee)       { double 'Adhearsion::DialPlan::ExecutionEnvironment' }
+      let(:mock_queue)    { double('QueueProxy', :environment => mock_ee, :name => queue_name).as_null_object }
 
       subject { QueueAgentsListProxy.new mock_queue, true }
 

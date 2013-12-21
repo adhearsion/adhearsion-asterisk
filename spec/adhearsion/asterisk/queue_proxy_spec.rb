@@ -3,7 +3,7 @@ require 'spec_helper'
 module Adhearsion::Asterisk
   describe QueueProxy do
     let(:queue_name)  { 'foobar' }
-    let(:mock_ee)     { mock 'Adhearsion::DialPlan::ExecutionEnvironment' }
+    let(:mock_ee)     { double 'Adhearsion::DialPlan::ExecutionEnvironment' }
 
     subject { QueueProxy.new queue_name, mock_ee }
 

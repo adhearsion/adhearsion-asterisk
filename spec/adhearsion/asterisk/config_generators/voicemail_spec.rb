@@ -76,7 +76,7 @@ describe 'Defining email-related Voicemail settings' do
   it 'the body must not be allowed to exceed 512 characters' do
     the_following_code {
       email.body "X" * 512
-    }.should_not raise_error ArgumentError
+    }.should_not raise_error
 
     the_following_code {
       email.body "X" * 513

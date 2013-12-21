@@ -1,5 +1,8 @@
 # develop
 
+# v1.5.1
+  * Remove dependency on activesupport
+
 # v1.5.0
   * Feature: Add `#say_characters`, which uses `SayDigits` to override adhearsion's built in SSML-generating method
 

@@ -134,7 +134,7 @@ describe "The private, helper methods in QueueDefinition" do
   end
 
   it '#boolean should convert a boolean into "yes" or "no"' do
-    mock_of_properties = mock "mock of the properties instance variable of a QueueDefinition"
+    mock_of_properties = double "mock of the properties instance variable of a QueueDefinition"
     mock_of_properties.should_receive(:[]=).once.with("icanhascheezburger", "yes")
     queue.should_receive(:properties).and_return mock_of_properties
     queue.send(:boolean, "icanhascheezburger" => true)
@@ -147,38 +147,38 @@ describe "The private, helper methods in QueueDefinition" do
   end
 
   it '#int should coerce a String into a Numeric if possible' do
-    mock_of_properties = mock "mock of the properties instance variable of a QueueDefinition"
+    mock_of_properties = double "mock of the properties instance variable of a QueueDefinition"
     mock_of_properties.should_receive(:[]=).once.with("chimpanzee", 1337)
     queue.should_receive(:properties).and_return mock_of_properties
     queue.send(:int, "chimpanzee" => "1337")
   end
 
   it '#string should add the argument directly to the properties' do
-    mock_of_properties = mock "mock of the properties instance variable of a QueueDefinition"
+    mock_of_properties = double "mock of the properties instance variable of a QueueDefinition"
     mock_of_properties.should_receive(:[]=).once.with("eins", "zwei")
     queue.should_receive(:properties).and_return mock_of_properties
     queue.send(:string, "eins" => "zwei")
   end
 
   it '#one_of() should add its successful match to the properties attribute' do
-    mock_properties = mock "mock of the properties instance variable of a QueueDefinition"
+    mock_properties = double "mock of the properties instance variable of a QueueDefinition"
     mock_properties.should_receive(:[]=).once.with(:doesnt_matter, 5)
     queue.should_receive(:properties).once.and_return mock_properties
     queue.send(:one_of, 1..100, :doesnt_matter => 5)
   end
 
   it "one_of() should convert booleans to yes/no" do
-    mock_properties = mock "mock of the properties instance variable of a QueueDefinition"
+    mock_properties = double "mock of the properties instance variable of a QueueDefinition"
     mock_properties.should_receive(:[]=).once.with(:doesnt_matter, 'yes')
     queue.should_receive(:properties).once.and_return mock_properties
     queue.send(:one_of, [true, false, :strict], :doesnt_matter => true)
 
-    mock_properties = mock "mock of the properties instance variable of a QueueDefinition"
+    mock_properties = double "mock of the properties instance variable of a QueueDefinition"
     mock_properties.should_receive(:[]=).once.with(:doesnt_matter, :strict)
     queue.should_receive(:properties).once.and_return mock_properties
     queue.send(:one_of, [true, false, :strict], :doesnt_matter => :strict)
 
-    mock_properties = mock "mock of the properties instance variable of a QueueDefinition"
+    mock_properties = double "mock of the properties instance variable of a QueueDefinition"
     mock_properties.should_receive(:[]=).once.with(:doesnt_matter, 'no')
     queue.should_receive(:properties).once.and_return mock_properties
     queue.send(:one_of, [true, false, :strict], :doesnt_matter => false)
@@ -311,10 +311,10 @@ describe "ConfigGeneratorTestHelper" do
   attr_reader :queues
 
   it "generated_config_has_pair() works properly" do
-    @queues = mock "A fake queues with just one pair", :to_s => "foo=bar"
+    @queues = double "A fake queues with just one pair", :to_s => "foo=bar"
     generated_config_has_pair(:foo => "bar").should be true
 
-    @queues = mock "A fake queues with just one pair"
+    @queues = double "A fake queues with just one pair"
     @queues.should_receive(:to_s).twice.and_return("[general]\n\nqaz=qwerty\nagent => 1,2,3")
     generated_config_has_pair(:qaz => "qwerty").should be true
     generated_config_has_pair(:foo => "bar").should be false

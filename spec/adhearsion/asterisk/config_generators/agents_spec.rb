@@ -244,12 +244,12 @@ describe "AgentsConfigGeneratorTestHelper" do
   end
 
   it "generated_config_has_pair() works properly with one pair" do
-    @agents = mock "A fake agents with just one pair", :conf => "foo=bar"
+    @agents = double "A fake agents with just one pair", :conf => "foo=bar"
     generated_config_has_pair(:foo => "bar").should be true
   end
 
   it "generated_config_has_pair() works properly with two pairs" do
-    @agents = mock "A fake agents with just one pair"
+    @agents = double "A fake agents with just one pair"
     @agents.should_receive(:conf).twice.and_return("[general]\n\nqaz=qwerty\nagent => 1,2,3")
 
     generated_config_has_pair(:qaz => "qwerty").should be true

@@ -1,5 +1,4 @@
 require 'adhearsion'
-require 'active_support/dependencies/autoload'
 require 'adhearsion/asterisk/version'
 require 'adhearsion/asterisk/call_controller_methods'
 require 'adhearsion/asterisk/has_agi_context'
@@ -7,10 +6,6 @@ require 'adhearsion/asterisk/plugin'
 
 module Adhearsion
   module Asterisk
-    extend ActiveSupport::Autoload
-
-    autoload :QueueProxy
-
     #
     # Execute an AMI action synchronously
     #
