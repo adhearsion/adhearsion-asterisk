@@ -428,7 +428,7 @@ module Adhearsion
       # Execution will continue until the user hangs up, but the channel will be no longer available
       #
       def goto(context, extension = :nothing, priority = :nothing)
-        call[:ahn_prevent_hangup] = true
+        call.auto_hangup = false
         args = ['Goto', context, extension, priority].reject { |v| v == :nothing }
         execute *args
         set_variable 'PUNCHBLOCK_END_ON_ASYNCAGI_BREAK', 'true'

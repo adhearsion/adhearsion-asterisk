@@ -559,7 +559,7 @@ module Adhearsion::Asterisk
         let(:priority) { 1 }
 
         it "sets the call to not hangup after execution" do
-          call.should_receive(:[]=).with(:ahn_prevent_hangup, true)
+          call.should_receive(:auto_hangup=).with(false)
           subject.should_receive(:execute).with('Goto', context, extension, priority)
           subject.should_receive(:set_variable).with('PUNCHBLOCK_END_ON_ASYNCAGI_BREAK', 'true').once
           subject.should_receive(:agi).with("ASYNCAGI BREAK").at_most :once
@@ -567,7 +567,7 @@ module Adhearsion::Asterisk
         end
 
         it "releases control of the call using ASYNCAGI BREAK" do
-          call.should_receive(:[]=).with(:ahn_prevent_hangup, true).at_most :once
+          call.should_receive(:auto_hangup=).with(false).at_most :once
           subject.should_receive(:execute).with('Goto', context, extension, priority).at_most :once
           subject.should_receive(:set_variable).with('PUNCHBLOCK_END_ON_ASYNCAGI_BREAK', 'true').once
           subject.should_receive(:agi).with("ASYNCAGI BREAK").once
@@ -576,7 +576,7 @@ module Adhearsion::Asterisk
 
         context "number of arguments" do
           before :each do
-            call.should_receive(:[]=).with(:ahn_prevent_hangup, true).at_most :once
+            call.should_receive(:auto_hangup=).with(false).at_most :once
             subject.should_receive(:set_variable).with('PUNCHBLOCK_END_ON_ASYNCAGI_BREAK', 'true').once
             subject.should_receive(:agi).with("ASYNCAGI BREAK").at_most :once
           end
