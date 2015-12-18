@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency %q<adhearsion>, ["~> 3.0.0.beta"]
-  s.add_runtime_dependency %q<jruby-openssl> if RUBY_PLATFORM == 'java'
 
   s.add_development_dependency %q<bundler>, ["~> 1.0"]
   s.add_development_dependency %q<rspec>, ["~> 2.5"]
