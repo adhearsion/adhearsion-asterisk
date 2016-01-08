@@ -3,7 +3,7 @@ require 'spec_helper'
 module Adhearsion::Asterisk
   describe HasAgiContext do
     let(:offer) do
-      Punchblock::Event::Offer.new :headers => {:x_agi_context => 'foobar'}
+      Adhearsion::Event::Offer.new :headers => {:x_agi_context => 'foobar'}
     end
 
     subject { Adhearsion::Call.new offer}
