@@ -389,7 +389,7 @@ module Adhearsion
       def play_tones(argument, wait = false)
         tones = [*argument].join(",")
         execute("Playtones", tones).tap do
-          sleep tones.scan(/(?<=\/)\d+/).map(&:to_i).sum.to_f / 1000 if wait
+          sleep tones.scan(/(?<=\/)\d+/).map(&:to_i).reduce(0, :+).to_f / 1000 if wait
         end
       end
 

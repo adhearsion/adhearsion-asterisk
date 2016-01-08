@@ -39,7 +39,7 @@ module Adhearsion::Asterisk
       it 'should join a queue with a timeout properly' do
         mock_ee.should_receive(:execute).once.with("queue", queue_name, "", '', '', '60', '')
         mock_ee.should_receive(:get_variable).once.with("QUEUESTATUS").and_return "JOINEMPTY"
-        subject.join! :timeout => 1.minute
+        subject.join! :timeout => 60
       end
 
       it 'should join a queue with an announcement file properly' do
@@ -95,7 +95,7 @@ module Adhearsion::Asterisk
       it 'joining a queue with many options specified' do
         mock_ee.should_receive(:execute).once.with("queue", queue_name, "rtHh", '', '', '120', '')
         mock_ee.should_receive(:get_variable).once.with("QUEUESTATUS").and_return "JOINEMPTY"
-        subject.join! :allow_transfer => :agent, :timeout => 2.minutes,
+        subject.join! :allow_transfer => :agent, :timeout => 120,
                       :play => :ringing, :allow_hangup => :everyone
       end
 

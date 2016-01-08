@@ -156,7 +156,7 @@ module Adhearsion
           end
 
           def periodically_announce(sound_file, options={})
-            frequency = options.delete(:every) || 1.minute
+            frequency = options.delete(:every) || 60
 
             string 'periodic-announce' => sound_file
             int 'periodic-announce-frequency' => frequency
@@ -228,7 +228,7 @@ module Adhearsion
             hash_of_files.each_pair do |key, value|
               unless SOUND_FILE_SYMBOL_INTERPRETATIONS.has_key? key
                 message = "Unrecogized sound file identifier #{key.inspect}. " +
-                      "Supported: " + SOUND_FILE_SYMBOL_INTERPRETATIONS.keys.map(&:inspect).to_sentence
+                      "Supported: " + SOUND_FILE_SYMBOL_INTERPRETATIONS.keys.map(&:inspect).join(',')
                 raise ArgumentError, message
               end
               @sound_files[SOUND_FILE_SYMBOL_INTERPRETATIONS[key]] = value

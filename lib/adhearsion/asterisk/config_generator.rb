@@ -69,7 +69,7 @@ module Adhearsion
         options.each_pair do |key, value|
           search = !criteria.find { |criterion| criterion === value }.nil?
           unless search
-            msg = "Didn't recognize #{value.inspect}! Must be one of " + criteria.map(&:inspect).to_sentence
+            msg = "Didn't recognize #{value.inspect}! Must be one of " + criteria.map(&:inspect).join(',')
             raise ArgumentError, msg
           end
           cache[key] = [true, false].include?(value) ? boolean_to_yes_no(value) : value
@@ -81,7 +81,7 @@ module Adhearsion
         options.each_pair do |key, value|
           search = criteria.keys.find { |criterion| criterion === value }
           unless search
-            msg = "Didn't recognize #{value.inspect}! Must be one of " + criteria.keys.map(&:inspect).to_sentence
+            msg = "Didn't recognize #{value.inspect}! Must be one of " + criteria.keys.map(&:inspect).join(',')
             raise ArgumentError, msg
           end
           cache[key] = criteria[value]

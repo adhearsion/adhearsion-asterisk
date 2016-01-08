@@ -8,7 +8,7 @@ module Adhearsion
         class << self
           def id_from_agent_channel(id)
             id = id.to_s
-            id.starts_with?('Agent/') ? id[%r[^Agent/(.+)$],1] : id
+            id.start_with?('Agent/') ? id[%r[^Agent/(.+)$],1] : id
           end
         end
 

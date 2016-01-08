@@ -139,12 +139,12 @@ describe 'A mailbox definition' do
   it 'should not add a trailing comma when the email is left out' do
     mailbox.pin_number 1337
     mailbox.name "Jay Phillips"
-    mailbox.to_s.ends_with?(',').should be false
+    mailbox.to_s.end_with?(',').should be false
   end
 
   it 'should not add a trailing comma when the email and name is left out' do
     mailbox.pin_number 1337
-    mailbox.to_s.ends_with?(',').should be false
+    mailbox.to_s.end_with?(',').should be false
   end
 
 end
@@ -172,7 +172,7 @@ describe "A Voicemail context definition" do
 
   it 'its string representation should begin with a context declaration' do
     vm = Adhearsion::Asterisk::ConfigGenerator::Voicemail.new
-    vm.context("jay") {|_|}.to_s.starts_with?("[jay]").should be true
+    vm.context("jay") {|_|}.to_s.start_with?("[jay]").should be true
   end
 
 end
@@ -244,8 +244,8 @@ describe 'An expansive example of the Voicemail config generator' do
 
       voicemail.recordings do |config|
         config.format :wav # ONCE YOU PICK A FORMAT, NEVER CHANGE IT UNLESS YOU KNOW THE CONSEQUENCES!
-        config.allowed_length 3.seconds..5.minutes
-        config.maximum_silence 10.seconds
+        config.allowed_length 3..(5*60)
+        config.maximum_silence 10
         # config.silence_threshold 128 # wtf?
       end
 
@@ -254,14 +254,14 @@ describe 'An expansive example of the Voicemail config generator' do
         config.attach_recordings true
         config.command '/usr/sbin/sendmail -f alice@wonderland.com -t'
         config.subject "New voicemail for #{config[:name]}"
-        config.body <<-BODY.strip_heredoc
-          Dear #{config[:name]}:
+        config.body <<-BODY
+Dear #{config[:name]}:
 
-          The caller #{config[:caller_id]} left you a #{config[:duration]} long voicemail
-          (number #{config[:message_number]}) on #{config[:date]} in mailbox #{config[:mailbox]}.
+The caller #{config[:caller_id]} left you a #{config[:duration]} long voicemail
+(number #{config[:message_number]}) on #{config[:date]} in mailbox #{config[:mailbox]}.
 
-          #{ "The recording is attached to this email.\n" if config.attach_recordings? }
-          - #{signature}
+#{ "The recording is attached to this email.\n" if config.attach_recordings? }
+- #{signature}
         BODY
       end
     end
