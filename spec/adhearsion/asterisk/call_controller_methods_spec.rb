@@ -547,8 +547,8 @@ module Adhearsion::Asterisk
               foobar_result = respond_to? :foobar
             end
 
-            run_result.should be_true
-            foobar_result.should be_false
+            run_result.should be true
+            foobar_result.should be false
           end
         end
       end
