@@ -165,6 +165,20 @@ module Adhearsion
       end
 
       #
+      # Issue the command to remove a SIP header from the current call channel
+      # example use: sip_remove_header("x-ahn-test")
+      #
+      # @param[String] the name of the SIP header
+      #
+      # @return [String] the Asterisk response
+      #
+      # @see http://www.voip-info.org/wiki/index.php?page=Asterisk+cmd+SIPAddHeader Asterisk SIPAddHeader
+      #
+      def sip_remove_header(header)
+        execute "SIPRemoveHeader", "#{header}:"
+      end
+
+      #
       # Issue the command to fetch a SIP header from the current call channel
       # example use: sip_get_header("x-ahn-test")
       #
