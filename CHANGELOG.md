@@ -1,4 +1,5 @@
 # develop
+  * Feature: Add #sip_remove_header to complement #sip_add_header, to remove a specific header that was previously added
 
 # v1.5.1
   * Remove dependency on activesupport
