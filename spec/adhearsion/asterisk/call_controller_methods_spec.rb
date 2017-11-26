@@ -194,6 +194,13 @@ module Adhearsion::Asterisk
         end
       end
 
+      describe "#sip_remove_header" do
+        it "executes SIPAddHeader" do
+          subject.should_receive(:execute).once.with 'SIPRemoveHeader', 'x-ahn-header:'
+          subject.sip_remove_header "x-ahn-header"
+        end
+      end
+
       describe "#sip_get_header" do
         it "uses #get_variable to get the header value" do
           value = 'jason-was-here'
