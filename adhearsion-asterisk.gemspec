@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{Asterisk specific features for Adhearsion}
   s.description = %q{An Adhearsion Plugin providing Asterisk-specific dialplan methods, AMI access, and access to Asterisk configuration}
 
-  s.rubyforge_project = "adhearsion-asterisk"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
