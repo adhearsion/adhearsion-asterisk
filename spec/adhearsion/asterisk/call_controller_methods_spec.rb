@@ -444,7 +444,7 @@ module Adhearsion::Asterisk
         end
 
         it "if a Time object is passed in alone, SayUnixTime is sent with the argument and the default format" do
-          subject.should_receive(:execute).once.with("SayUnixTime", time.to_i, "", "")
+          subject.should_receive(:execute).once.with("SayUnixTime", time.to_i, "", "ABdY \'digits/at\' IMp")
           subject.play_time(time)
         end
 
